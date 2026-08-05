@@ -1,6 +1,6 @@
 # MSPM0G3507 工程引脚定义
 
-本文档汇总  当前工程的全部已配置 MCU 引脚。内容以 `ncontroller.syscfg`、`ti_msp_dl_config.h/.c` 和驱动实际调用为准。
+本文档汇总当前工程的全部已配置 MCU 引脚。内容以 `ncontroller.syscfg`、`ti_msp_dl_config.h/.c` 和驱动实际调用为准。
 
 方向均以 MCU 为参照：`输出` 表示 MSPM0G3507 驱动外设，`输入` 表示 MSPM0G3507 接收外设信号。
 
@@ -182,8 +182,8 @@ W25Q64 使用软件 SPI，保存控制参数、传感器校准值等数据。
 | `PA5` | 40 MHz HFXIN | `PA21` | 蓝牙 UART2 TX |
 | `PA6` | 40 MHz HFXOUT | `PA22` | 蓝牙 UART2 RX |
 | `PA7` | 右电机 PWM/INA2 | `PA23` | 预留 PWM 3 |
-| `PA8` | OpenMV UART1 TX | `PA24` | 灰度 P6 |
-| `PA9` | OpenMV UART1 RX | `PA25` | 灰度 P5 |
+| `PA8` | MaixCAM Pro UART1 TX | `PA24` | 灰度 P6 |
+| `PA9` | MaixCAM Pro UART1 RX | `PA25` | 灰度 P5 |
 | `PA10` | 地面站 UART0 TX | `PA26` | 电池 ADC 输入 |
 | `PA11` | 地面站 UART0 RX | `PA27` | 蜂鸣器 |
 | `PA12` | W25Q64 SCLK | `PA28` | 灰度 P2 |

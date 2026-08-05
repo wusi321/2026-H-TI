@@ -58,6 +58,7 @@ mspm0g3507_26ti/keil/Objects/
 mspm0g3507_26ti/keil/Listings/
 **/keil/Objects/
 **/keil/Listings/
+TIME-OLED/source/
 *.log
 
 # LaTeX generated files

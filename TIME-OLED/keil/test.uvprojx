@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__MSPM0G3507__</Define>
               <Undefine></Undefine>
-              <IncludePath>..\source;..\source\third_party\CMSIS\Core\Include;..\ndrivers;..\keil</IncludePath>
+              <IncludePath>..\..\mspm0g3507_26ti\source;..\..\mspm0g3507_26ti\source\third_party\CMSIS\Core\Include;..\ndrivers;..\keil</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -387,127 +387,127 @@
             <File>
               <FileName>dl_adc12.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_adc12.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_adc12.c</FilePath>
             </File>
             <File>
               <FileName>dl_aes.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_aes.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_aes.c</FilePath>
             </File>
             <File>
               <FileName>dl_aesadv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_aesadv.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_aesadv.c</FilePath>
             </File>
             <File>
               <FileName>dl_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_common.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_common.c</FilePath>
             </File>
             <File>
               <FileName>dl_crc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_crc.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_crc.c</FilePath>
             </File>
             <File>
               <FileName>dl_crcp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_crcp.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_crcp.c</FilePath>
             </File>
             <File>
               <FileName>dl_dac12.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_dac12.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_dac12.c</FilePath>
             </File>
             <File>
               <FileName>dl_dma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_dma.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_dma.c</FilePath>
             </File>
             <File>
               <FileName>dl_flashctl.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_flashctl.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_flashctl.c</FilePath>
             </File>
             <File>
               <FileName>dl_i2c.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_i2c.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_i2c.c</FilePath>
             </File>
             <File>
               <FileName>dl_keystorectl.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_keystorectl.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_keystorectl.c</FilePath>
             </File>
             <File>
               <FileName>dl_lcd.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_lcd.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_lcd.c</FilePath>
             </File>
             <File>
               <FileName>dl_lfss.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_lfss.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_lfss.c</FilePath>
             </File>
             <File>
               <FileName>dl_mathacl.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_mathacl.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_mathacl.c</FilePath>
             </File>
             <File>
               <FileName>dl_mcan.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_mcan.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_mcan.c</FilePath>
             </File>
             <File>
               <FileName>dl_opa.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_opa.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_opa.c</FilePath>
             </File>
             <File>
               <FileName>dl_rtc_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_rtc_common.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_rtc_common.c</FilePath>
             </File>
             <File>
               <FileName>dl_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_spi.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_spi.c</FilePath>
             </File>
             <File>
               <FileName>dl_timer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_timer.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_timer.c</FilePath>
             </File>
             <File>
               <FileName>dl_trng.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_trng.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_trng.c</FilePath>
             </File>
             <File>
               <FileName>dl_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_uart.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_uart.c</FilePath>
             </File>
             <File>
               <FileName>dl_vref.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\dl_vref.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\dl_vref.c</FilePath>
             </File>
             <File>
               <FileName>dl_interrupt.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\m0p\dl_interrupt.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\m0p\dl_interrupt.c</FilePath>
             </File>
             <File>
               <FileName>dl_sysctl_mspm0g1x0x_g3x0x.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.c</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.c</FilePath>
             </File>
             <File>
               <FileName>startup_mspm0g350x_uvision.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\source\ti\devices\msp\m0p\startup_system_files\keil\startup_mspm0g350x_uvision.s</FilePath>
+              <FilePath>..\..\mspm0g3507_26ti\source\ti\devices\msp\m0p\startup_system_files\keil\startup_mspm0g350x_uvision.s</FilePath>
             </File>
           </Files>
         </Group>

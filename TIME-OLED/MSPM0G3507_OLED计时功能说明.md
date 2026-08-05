@@ -19,6 +19,8 @@
 TIME-OLED\keil\test.uvprojx
 ```
 
+该 Keil 工程复用仓库内 `mspm0g3507_26ti\source` 下的 TI MSPM0 SDK/DriverLib；`TIME-OLED\source` 属于本地重复拷贝，不作为仓库内容提交。
+
 Keil 构建后生成的烧录文件：
 
 ```text
