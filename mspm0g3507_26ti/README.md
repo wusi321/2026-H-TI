@@ -14,6 +14,7 @@ MaixCAM UART1 视觉帧
 -> 200 Hz 钢珠位置/速度/加速度串级控制
 -> UART3 总线舵机角度与速度命令
 -> 小车速度、循迹、航向、停车线和任务完成判断
+-> PA15 TIMER_GATE 外部计时器启停
 -> UART2 蓝牙 20 Hz 遥测
 ```
 
@@ -59,6 +60,7 @@ MaixCAM UART1 视觉帧
 - MaixCAM Pro：UART1，`PA8 TX` / `PA9 RX`，115200 8N1。
 - 蓝牙 HC-05：UART2，`PA21 TX` / `PA22 RX`，用于 20 Hz 调参遥测。
 - 总线舵机：UART3，`PB2 TX`，写角度/速度命令。
+- 外部计时器：`PA15 TIMER_GATE`，高电平启动/继续独立计时器，低电平暂停/停止；接 `../TIME-OLED` 计时器板 `PA15/E2B`，必须共地。
 - 12 路灰度：`PA31, PA28, PA1, PA0, PA25, PA24, PB24, PB23, PB19, PB18, PA16, PB13`。
 - 电机 PWM：`PA4, PA7, PA3, PB14`。
 - 编码器：`PB4/PB5` 脉冲，`PB6/PB7` 方向。

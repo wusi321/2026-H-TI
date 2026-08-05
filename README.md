@@ -1,6 +1,6 @@
 # 2026-H-TI 车载平衡滚球运动控制系统
 
-本仓库整理 2026 年全国大学生电子设计竞赛 H 题“车载平衡滚球运动控制系统”的完整完赛代码与文档，包含 MaixCAM 视觉测量、MaixCAM 图传录制、MSPM0G3507 小车主控、两套独立 Web 工具和设计报告。
+本仓库整理 2026 年全国大学生电子设计竞赛 H 题“车载平衡滚球运动控制系统”的完整完赛代码与文档，包含 MaixCAM 视觉测量、MaixCAM 图传录制、MSPM0G3507 小车主控、外部计时器板、两套独立 Web 工具和设计报告。
 
 系统目标是在车载横梁/PPR 管上检测并控制 1 cm 钢珠位置，同时完成题目要求的车辆行驶、循迹、停车和位置保持任务。
 
@@ -19,8 +19,14 @@ MSPM0G3507 主控工程
   钢珠位置闭环
   UART3 总线舵机控制
   UART2 蓝牙遥测
+  PA15 输出外部计时器启停电平
         |
         v
+独立计时器 M0 板
+  PA15 GPIO 输入
+  OLED 显示计时
+  高电平计时 / 低电平暂停
+
 调参 Web 控制台
   Web Serial 接收遥测
   记录/回放/指标/仿真/参数导出
@@ -40,6 +46,7 @@ MaixCAM 图传工程
 | --- | --- |
 | `Maixcam/` | MaixCAM 视觉测量主工程：钢珠检测、标定、YOLO 辅助、UART 输出和 WebRTC 图传。 |
 | `mspm0g3507_26ti/` | MSPM0G3507 主控工程：行车控制、循迹、IMU、钢珠闭环、任务状态机和遥测。 |
+| `TIME-OLED/` | 独立 MSPM0G3507 OLED 计时器工程：通过 PA15 GPIO 电平接收主控计时启停信号。 |
 | `tuchuan/` | MaixCAM 图传专用版本：只启动 WebRTC，用于比赛视频预览和录制。 |
 | `tiaocan/` | 钢珠调参 Web 控制台：记录小车运行状态、车速、小球运动和舵机状态，用于实车调参、回放、仿真和参数导出。 |
 | `web/` | 小车运动轨迹 Web 控制台：记录方向、轮速、偏航角、工作模式并积分显示车辆路径。与 `tiaocan/` 互不依赖。 |
@@ -56,6 +63,7 @@ MaixCAM 图传工程
 - 编码器电机：车辆速度与里程控制。
 - IMU：航向角和角速度估计。
 - 总线舵机：控制横梁/管道角度，使钢珠移动或保持目标位置。
+- 独立计时器 M0 板：接收主控 PA15 高/低电平，OLED 显示比赛计时。
 - HC-05 蓝牙：将 MCU 遥测发送到 PC 调参台。
 
 ## 通信链路
@@ -64,6 +72,7 @@ MaixCAM 图传工程
 | --- | --- | --- | --- |
 | MaixCAM UART -> MSPM0 UART1 | MaixCAM 到 MCU | 钢珠位置、速度、置信度 | 115200 8N1，20 字节二进制帧，CRC16 |
 | MSPM0 UART3 -> 总线舵机 | MCU 到舵机 | 舵机角度和速度命令 | 见 `driver/ftServo.c` |
+| MSPM0 PA15 -> TIME-OLED PA15 | 主控到独立计时器板 | 计时启停门控 | GPIO 电平，高电平计时，低电平暂停/停止，需共地 |
 | MSPM0 UART2 -> HC-05 -> PC | MCU 到 `tiaocan` | 任务遥测、实测曲线、钢珠/舵机参数调试 | 9600 8N1，20 Hz 二进制遥测 |
 | 运动遥测串口 -> PC | MCU 到 `web` | 小车方向、轮速、偏航角、工作模式和路径记录 | 9600 8N1，32 字节 `AA 55` 帧 |
 | MaixCAM WebRTC -> PC | MaixCAM 到浏览器 | 视频预览和录制 | HTTP/WebRTC，默认端口 8000 |
@@ -112,7 +121,17 @@ cd tuchuan\main\host
 
 打开 `http://127.0.0.1:18765`，填写 MaixCAM IP 并录制。详细说明见 `tuchuan/README.md` 和 `tuchuan/main/README.md`。
 
-### 4. 钢珠调参 Web 控制台
+### 4. 独立 OLED 计时器
+
+Keil 打开：
+
+```text
+TIME-OLED/keil/test.uvprojx
+```
+
+主控 `mspm0g3507_26ti` 的 `PA15/TIMER_GATE` 接计时器板 `PA15/E2B`，两块板必须共地。主控输出高电平时计时器运行，输出低电平时计时暂停/停止。详细说明见 `TIME-OLED/README.md`。
+
+### 5. 钢珠调参 Web 控制台
 
 `tiaocan/` 是独立前端工程，用于记录小车运行状态、车速、小球运动、舵机状态并辅助调参：
 
@@ -124,7 +143,7 @@ npm run dev -- --host 127.0.0.1 --port 4317
 
 使用 Chrome 或 Edge 打开 `http://127.0.0.1:4317`，通过 Web Serial 连接 HC-05。详细说明见 `tiaocan/README.md`。
 
-### 5. 小车运动轨迹 Web 控制台
+### 6. 小车运动轨迹 Web 控制台
 
 `web/` 是另一套独立前端工程，用于显示和记录小车方向、轮速、偏航角、工作模式和积分路径：
 
@@ -155,6 +174,7 @@ npm run dev
 - `Maixcam/docs/task_execution.md`：任务目标和状态机说明。
 - `mspm0g3507_26ti/UART2_TELEMETRY.md`：钢珠调参蓝牙遥测协议。
 - `mspm0g3507_26ti/变量定义及调参说明.md`：MCU 调参变量说明。
+- `TIME-OLED/README.md`：独立 OLED 计时器板说明。
 - `tiaocan/README.md`：钢珠调参 Web 控制台说明。
 - `web/README.md`：小车运动轨迹 Web 控制台说明。
 - `latex/README.md`：设计报告编译说明。

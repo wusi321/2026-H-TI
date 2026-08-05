@@ -168,12 +168,12 @@ void Reserved_PWM6_Output(uint16_t us)
 
 void Reserved_PWM7_Output(uint16_t us)
 {
-  DL_TimerG_setCaptureCompareValue(PWM_2_INST, us, GPIO_PWM_2_C0_IDX);//TIMG7-CH0-PA17
+  DL_TimerG_setCaptureCompareValue(PWM_2_INST, us, GPIO_PWM_2_C0_IDX);//TIMG7-CH0-PA23
 }
 
 void Reserved_PWM8_Output(uint16_t us)
 {
-  DL_TimerG_setCaptureCompareValue(PWM_2_INST, us, GPIO_PWM_2_C1_IDX);//TIMG7-CH0-PA2
+  DL_TimerG_setCaptureCompareValue(PWM_2_INST, us, GPIO_PWM_2_C1_IDX);//TIMG7-CH1-PA2
 }
 
 

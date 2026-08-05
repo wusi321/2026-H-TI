@@ -4,6 +4,7 @@ Thumbs.db
 desktop.ini
 .idea/
 .vscode/
+.metadata/
 
 # Python
 __pycache__/
@@ -55,6 +56,8 @@ JLinkSettings.ini
 *.uvoptx
 mspm0g3507_26ti/keil/Objects/
 mspm0g3507_26ti/keil/Listings/
+**/keil/Objects/
+**/keil/Listings/
 *.log
 
 # LaTeX generated files

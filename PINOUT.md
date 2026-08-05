@@ -10,14 +10,14 @@
 |---|---|---|---:|---|
 | `PA10` | `UART0_TX` | 输出 | 460800 baud | 无名创新地面站；接 USB-TTL 的 RXD |
 | `PA11` | `UART0_RX` | 输入 | 460800 baud | 无名创新地面站；接 USB-TTL 的 TXD |
-| `PA8` | `UART1_TX` | 输出 | 256000 baud | OpenMV4 Mini；接 OpenMV UART RX |
-| `PA9` | `UART1_RX` | 输入 | 256000 baud | OpenMV4 Mini；接 OpenMV UART TX |
+| `PA8` | `UART1_TX` | 输出 | 115200 baud | MaixCAM Pro；接 MaixCAM A18/RX |
+| `PA9` | `UART1_RX` | 输入 | 115200 baud | MaixCAM Pro；接 MaixCAM A19/TX |
 | `PA21` | `UART2_TX` | 输出 | 9600 baud | 蓝牙串口模块；接模块 RXD，TX 使用 DMA 通道 0 |
 | `PA22` | `UART2_RX` | 输入 | 9600 baud | 蓝牙串口模块；接模块 TXD |
-| `PB2` | `UART3_TX` | 输出 | 9600 baud | US100 串口模式发送/触发线 |
-| `PB3` | `UART3_RX` | 输入 | 9600 baud | US100 串口模式接收/回波线 |
-| `PA29` | `I2C1_SCL` | 双向开漏 | 400 kHz | ICM42688 SCL，沿用原 MPU6050 接口 |
-| `PA30` | `I2C1_SDA` | 双向开漏 | 400 kHz | ICM42688 SDA，自动检测地址 `0x68/0x69` |
+| `PB2` | `UART3_TX` | 输出 | 115200 baud | 总线舵机 DATA 写入线，当前舵机 ID=2 |
+| `PB3` | `UART3_RX` | 输入 | 115200 baud | 总线舵机回读预留，当前主要写命令 |
+| `PA29` | `I2C1_SCL` | 双向开漏 | 1 MHz | ICM42688 SCL，沿用原 MPU6050 接口 |
+| `PA30` | `I2C1_SDA` | 双向开漏 | 1 MHz | ICM42688 SDA，自动检测地址 `0x68/0x69` |
 
 ## 电机与舵机 PWM
 
@@ -38,16 +38,18 @@
 
 | MCU 引脚 | 定时器通道 | 方向 | 软件接口 | 当前用途 |
 |---|---|---|---|---|
-| `PA15` | GPIO | 输出 | `Timer_Gate_Set()` | 外部计时器使能：高电平开始，低电平停止，默认低电平 |
+| `PA15` | GPIO | 输出 | `Timer_Gate_Set()` | 外部计时器使能 `TIMER_GATE`：高电平开始/继续计时，低电平暂停/停止，默认低电平 |
 | `PB1` | `TIMA1_CCP1` | 输出 | `steer_servo_pwm_m1p1()` | 预留执行器/PWM 2 |
 | `PA23` | `TIMG7_CCP0` | 输出 | `steer_servo_pwm_m1p2()` | 预留执行器/PWM 3 |
 | `PA2` | `TIMG7_CCP1` | 输出 | `steer_servo_pwm_m1p3()` | 前轮转向舵机；车辆任务主要使用此路 |
 
-四路舵机 PWM 周期为 20 ms，接口参数单位为微秒脉宽。
+当前可用舵机 PWM 为 `PB1`、`PA23`、`PA2` 三路，周期为 20 ms，接口参数单位为微秒脉宽。`PA15` 已从旧的预留 PWM 用途改为外部计时器 GPIO，不再作为舵机 PWM 输出。
+
+主控 `PA15/TIMER_GATE` 用于连接独立计时器板 `TIME-OLED` 的 `PA15/E2B` 输入。两块板必须共地；主控输出高电平时计时器 OLED 显示 `RUN` 并累加时间，输出低电平时显示 `PAUSE` 并保持当前时间。
 
 PA15 诊断方式：将工作模式切换到 `28` 会在电机保持停止的情况下强制输出高电平；屏幕第 `31` 页显示 `request`、`dout`、`output en`、`pin level` 四个状态。正常高电平时四项均为 `1`。若前三项为 `1` 而 `pin level` 为 `0`，应检查外部电路是否拉低 PA15；若四项均为 `1` 而测量仍为低电平，应确认测量的是 LQFP64 封装第 8 脚对应的 PA15，并与控制板共地。
 
-注意：`ntimer.c` 中 `Reserved_PWM6_Output` 和 `Reserved_PWM7_Output` 旁的旧注释仍写着 `PA16/PA17`，但实际编译使用的生成宏对应 `PB1/PA23`。上表以 `ncontroller.syscfg` 和 `ti_msp_dl_config.h` 为准。
+上表以 `ncontroller.syscfg`、`ti_msp_dl_config.h` 和 `driver/ntimer.c` 的实际调用为准。
 
 ## 编码器接口
 
@@ -195,8 +197,8 @@ W25Q64 使用软件 SPI，保存控制参数、传感器校准值等数据。
 |---|---|---|---|
 | `PB0` | IMU 加热器，可选/当前关闭 | `PB14` | 左电机 PWM/INB2 |
 | `PB1` | 预留 PWM 2 | `PB15` | LCD SDA |
-| `PB2` | US100 UART3 TX | `PB16` | LCD RST |
-| `PB3` | US100 UART3 RX | `PB17` | LCD DC |
+| `PB2` | UART3 总线舵机 TX | `PB16` | LCD RST |
+| `PB3` | UART3 总线舵机 RX 预留 | `PB17` | LCD DC |
 | `PB4` | 右编码器脉冲 | `PB18` | 灰度 P10 |
 | `PB5` | 左编码器脉冲 | `PB19` | 灰度 P9 |
 | `PB6` | 右编码器方向 | `PB20` | LCD CS |
@@ -222,34 +224,7 @@ W25Q64 使用软件 SPI，保存控制参数、传感器校准值等数据。
 
 1. `ti_msp_dl_config.h` 中的端口、引脚和外设实例。
 2. `motor_control.c` 中电机 PWM 通道与左右电机的对应关系。
-3. `ntimer.c` 中四路舵机 PWM 接口。
+3. `ntimer.c` 中三路舵机 PWM 接口和 `Timer_Gate_Set()` 的 PA15 门控输出。
 4. `gray_detection.c` 中 12 路灰度顺序。
 5. `main.c` 顶部接线注释。
 6. 本文档与 `README.md`。
-
-
-
-• 已完成 UART1 到 MaixCAM 的稳球闭环改造。
-                                                                       
-  - UART1：PA9 RX <- MaixCAM A19 TX，PA8 TX -> A18 RX，115200、8N1     
-  - 解析固定 20 字节 AA 55 帧、小端字段及 CRC16-CCITT                  
-  - RX FIFO 排空接收，并记录溢出、帧、校验、噪声错误                   
-  - 200 Hz 位置/速度闭环，默认目标为水管中心 0 mm                      
-  - 视觉失效超过 100 ms 后清积分并限速回中                             
-  - 舵机绝对角度默认限制为 -10° ~ +10°                                 
-  - 启动时先写安全中值，等待 10 ms，再使能扭矩                         
-  - UART3 舵机保持 115200、ID=2                                        
-  - 舵机命令以 100 Hz 更新                                             
-                                                                       
-  方向切换位于 mspm0g3507_26ti/apply/ball_balance.c:81：               
-                                                                       
-  volatile int8_t g_ball_balance_servo_direction =                     
-      BALL_BALANCE_SERVO_DIRECTION_SAME;  // +1                        
-                                                                       
-  实机方向相反时改为：                                                 
-                                                                       
-  BALL_BALANCE_SERVO_DIRECTION_REVERSED   // -1                        
-                                                                       
-  控制参数、中值及机械限位位于 mspm0g3507_26ti/apply/                  
-  ball_balance.c:59。UART1 接收在 mspm0g3507_26ti/driver/nuart.c:57，  
-  200 Hz 控制调用在 mspm0g3507_26ti/user/main.c:102。

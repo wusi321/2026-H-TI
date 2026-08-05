@@ -10,7 +10,7 @@
 	手机蓝牙APP地面站	
 		PA21-UART2-TXD	蓝牙串口模块RXD
 		PA22-->UART2-RXD	蓝牙串口模块TXD
-	UART3 serial bus servo
+	UART3 serial bus servo (115200, 8N1)
 		PB2-UART3-TXD	servo DATA (write only)
 		PB3-->UART3-RXD	unused
 	12路灰度传感器FPC	
@@ -31,8 +31,9 @@
 		PA7-->A0-PWM-CH2	右边电机调速INA2
 		PA3-->A0-PWM-CH1	左边电机调速INB1
 		PB14-->A0-PWM-CH0	左边电机调速INB2		
+	外部计时器控制GPIO
+		PA15-->TIMER_GATE  高电平启动计时，低电平停止/暂停
 	舵机控制SPWM	
-		PA15-A1-PWM-CH0	  预留1
 		PB1-->A1-PWM-CH1	预留2
 		PA23-->G7-PWM-CH0	预留3
 		PA2-->G7-PWM-CH1	前轮舵机转向控制PWM
