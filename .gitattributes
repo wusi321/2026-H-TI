@@ -1,0 +1,32 @@
+# Keep source/text files stable across Windows and Unix checkouts.
+* text=auto
+
+*.md text eol=lf
+*.txt text eol=lf
+*.py text eol=lf
+*.c text eol=lf
+*.h text eol=lf
+*.cpp text eol=lf
+*.hpp text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.csv text eol=lf
+*.tex text eol=lf
+
+*.pdf binary
+*.docx binary
+*.xls binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.zip binary
+*.a binary
+*.lib binary
+*.cvimodel binary

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "calibrated": true,
+  "image_width": 640,
+  "image_height": 360,
+  "rod_length_cm": 25.0,
+  "ball_diameter_cm": 1.0,
+  "roi": [0, 108, 640, 92],
+  "axis_start_px": [0.0, 175.0],
+  "axis_end_px": [639.0, 175.0],
+  "samples": [
+    {"s_px": 52.0, "x_cm": -10.0},
+    {"s_px": 180.0, "x_cm": -5.0},
+    {"s_px": 330.0, "x_cm": 0.0},
+    {"s_px": 487.0, "x_cm": 5.0},
+    {"s_px": 612.0, "x_cm": 10.0}
+  ]
+}

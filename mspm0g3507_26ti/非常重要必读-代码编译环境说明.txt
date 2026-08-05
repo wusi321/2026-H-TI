@@ -1,0 +1,21 @@
+默认的开发环境为：
+1、mspm0 sdk库版本mspm0_sdk_2_00_01_00
+2、sysconfig图形化配置工具为1.20.0版本
+3、keil版本5.39+arm工具链6.21版本
+4、keil开发时下载器可以选daplink、jlink、xds110（不推荐），mspm0不能使用stlink下载
+5、ccs开发时下载器用jlink（推荐）、xds110
+———————————————————————————————————————————————————
+基于Keil5的MSPM0开发环境搭建 https://www.bilibili.com/video/BV1Ei421Q7n9
+Keil5+Sysconfig图像化配置插件、批处理文件综合功能演示 https://www.bilibili.com/video/BV1Bw4m1D75g
+MSPM0 SDK包的库文件依赖关系与相对路径设置说明 https://www.bilibili.com/video/BV1Bm421M7Xn
+———————————————————————————————————————————————————
+6、使用更高版本的keil或者arm编译工具链时，使用参照下面教程
+———————————————————————————————————————————————————
+电赛小车代码在高版本keil编译环境说明 https://www.bilibili.com/video/BV1MJL3zPEYS
+MSPM0电赛小车学习套件使用CCS开发时工程代码导入及编译下载 https://www.bilibili.com/video/BV1weLozHEk7
+———————————————————————————————————————————————————
+特别说明：
+1、由于当前TI MSPM0 SDK库与sysconfig图形化配置工具更新非常频繁，
+当使用非默认开发环境进行学习时，由于库函数、版本更新可能需要进
+一步适配才能使用，绝大多数情况下将代码优化等级先改成0能解决问题！！！
+2、当开发板下载过其他代码时，建议先情况外部flash w25q64后再作为小车控制板

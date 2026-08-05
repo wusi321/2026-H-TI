@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectSpec>
+    <applicability>
+        <when>
+            <context
+                deviceFamily="ARM"
+                deviceId="MSPM0G3507"
+            />
+        </when>
+    </applicability>
+
+    <project
+        title="ncontroller_mspm0g3507"
+        name="ncontroller_mspm0g3507"
+        configurations="Debug"
+        toolChain="TICLANG"
+        connection="TIXDS110_Connection.xml"
+        device="MSPM0G3507"
+        ignoreDefaultDeviceSettings="true"
+        ignoreDefaultCCSSettings="true"
+        products="MSPM0-SDK;sysconfig"
+        compilerBuildOptions="
+            -I${PROJECT_ROOT}
+            -I${PROJECT_ROOT}/${ConfigName}
+            -O2
+            @syscfg/device.opt
+            -I${COM_TI_MSPM0_SDK_INSTALL_DIR}/source/third_party/CMSIS/Core/Include
+            -I${COM_TI_MSPM0_SDK_INSTALL_DIR}/source
+            -gdwarf-3
+            -mcpu=cortex-m0plus
+            -march=thumbv6m
+            -mfloat-abi=soft
+            -mthumb
+        "
+        linkerBuildOptions="
+            -ldevice.cmd.genlibs
+            -L${COM_TI_MSPM0_SDK_INSTALL_DIR}/source
+            -L${PROJECT_ROOT}
+            -L${PROJECT_BUILD_DIR}/syscfg
+            -Wl,--rom_model
+            -Wl,--warn_sections
+            -L${CG_TOOL_ROOT}/lib
+            -llibc.a
+        "
+        enableHexTool="true"
+        hexBuildOptions="--ti_txt"
+        enableSysConfigTool="true"
+        sysConfigBuildOptions="
+            --product ${COM_TI_MSPM0_SDK_INSTALL_DIR}/.metadata/product.json
+            --compiler ticlang
+        "
+        sourceLookupPath="${COM_TI_MSPM0_SDK_INSTALL_DIR}/source/ti/driverlib"
+        description="ncontroller mspm0g3507">
+
+        <property name="buildProfile" value="release"/>
+        <property name="isHybrid" value="true"/>
+        <file path="../user/main.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../user/main.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../user/headfile.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../user/datatype.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+
+        <file path="../driver/binary.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+        <file path="../driver/glcdfont.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/icm20608.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/icm20608.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/nadc.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/nadc.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/nbutton.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/nbutton.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/neeprom.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/neeprom.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/ngpio.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/ngpio.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/ni2c.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/ni2c.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/nppm.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/nppm.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/npwm.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/npwm.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/nqei.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/nqei.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/ntimer.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/ntimer.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/nuart.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/nuart.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/oled.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/oled.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/oledfont.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/ssd1306.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/ssd1306.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/system.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/system.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/us100.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/us100.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/ftServo.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/ftServo.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/w25qxx.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../driver/w25qxx.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+
+
+      <file path="../apply/attitude_selfstable.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/attitude_selfstable.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/filter.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/filter.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/gray_detection.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/gray_detection.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/motor_control.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/motor_control.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/nclink.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/nclink.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/pid.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/pid.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/rc.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/rc.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/rgb.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/rgb.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/sdk.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/sdk.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/self_balancing.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/self_balancing.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/sensor.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/sensor.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/ui.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/ui.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/user.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/vision.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/vision.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/ball_balance.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/ball_balance.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/wp_math.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/wp_math.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+
+      <file path="../apply/developer/developer_mode.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/developer/developer_mode.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/developer/subtask.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/developer/subtask.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+
+      <!--file path="../apply/Fusion/trig_function.c" openOnCreation="false" excludeFromBuild="false" action="copy"->
+        </file>
+      <file path="../apply/Fusion/trig_function.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file-->
+      <file path="../apply/Fusion/Fusion.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/Fusion/FusionAhrs.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/Fusion/FusionAhrs.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/Fusion/FusionAxes.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/Fusion/FusionCalibration.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/Fusion/FusionCompass.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/Fusion/FusionCompass.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/Fusion/FusionMath.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/Fusion/FusionOffset.c" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+      <file path="../apply/Fusion/FusionOffset.h" openOnCreation="false" excludeFromBuild="false" action="copy">
+        </file>
+
+        <file path="../ncontroller.syscfg" openOnCreation="true" excludeFromBuild="false" action="copy">
+        </file>
+        <!--file path="../README.md" openOnCreation="true" excludeFromBuild="false" action="copy">
+        </file-->
+    </project>
+</projectSpec>

@@ -1,0 +1,44 @@
+id: rsimplegb
+name: yolo26
+version: 1.0.12
+author: lll
+desc: MaixCAM Pro overhead steel-ball position measurement
+include:
+  - app.yaml
+  - main.py
+  - config.py
+  - balance_controller.py
+  - ball_detector.py
+  - candidate_confirmation.py
+  - measurement_fusion.py
+  - position_calibration.py
+  - state_estimator.py
+  - servo_output.py
+  - vision_protocol.py
+  - web_stream.py
+  - yolo_reacquire.py
+  - calibration/position_calibration.json
+  - calibration/README.md
+  - models/README.md
+icon: ''
+files:
+  - calibration\position_calibration.json
+  - calibration\README.md
+  - models\gangzhu_yolo11n_pose_320_int8.cvimodel
+  - models\gangzhu_yolo11n_pose_320.mud
+  - models\README.md
+  - app.png
+  - app.yaml
+  - balance_controller.py
+  - ball_detector.py
+  - candidate_confirmation.py
+  - config.py
+  - main.py
+  - measurement_fusion.py
+  - position_calibration.py
+  - servo_output.py
+  - state_estimator.py
+  - uart_transport.py
+  - vision_protocol.py
+  - web_stream.py
+  - yolo_reacquire.py

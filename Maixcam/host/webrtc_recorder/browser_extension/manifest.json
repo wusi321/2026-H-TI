@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "MaixCAM WebRTC 录像台",
+  "version": "1.2.0",
+  "description": "为 MaixCAM Pro 原生 WebRTC 页面添加本地录像、计时与下载功能。",
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*"
+      ],
+      "include_globs": [
+        "http://10.*:8000/*",
+        "http://172.*:8000/*",
+        "http://192.168.*:8000/*"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "js": [
+        "bridge.js",
+        "content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+# Operating system / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node / frontend
+node_modules/
+dist/
+build/
+coverage/
+test-results/
+playwright-report/
+*.tsbuildinfo
+vite.stdout.log
+vite.stderr.log
+
+# MaixCAM / recording runtime data
+host/recordings/
+recordings/
+*.mp4
+*.webm
+*.avi
+*.mkv
+edge-profile*/
+**/edge-profile*/
+**/edge-profile-*/
+**/webrtc_recorder/preview/
+**/start_web_recorder.log
+
+# Embedded build outputs
+*.o
+*.d
+*.crf
+*.axf
+*.elf
+*.hex
+*.bin
+*.map
+*.lst
+*.lnp
+*.htm
+*.build_log.htm
+JLinkLog.txt
+JLinkSettings.ini
+*.uvguix.*
+*.uvoptx
+mspm0g3507_26ti/keil/Objects/
+mspm0g3507_26ti/keil/Listings/
+*.log
+
+# LaTeX generated files
+latex/*.aux
+latex/*.fdb_latexmk
+latex/*.fls
+latex/*.log
+latex/*.out
+latex/*.synctex.gz
+
+# Local backups and cache
+backups/
+Maixcam/backups/
+*.bak
+*.tmp

@@ -1,0 +1,319 @@
+:root {
+  --mx-lime: #c8ff38;
+  --mx-lime-soft: rgba(200, 255, 56, 0.16);
+  --mx-panel: rgba(5, 15, 13, 0.94);
+  --mx-line: rgba(200, 255, 56, 0.25);
+  --mx-text: #f3f8ef;
+  --mx-muted: #91a49b;
+  --mx-red: #ff4d62;
+}
+
+#mx-recorder-console,
+#mx-recorder-console * {
+  box-sizing: border-box;
+}
+
+#mx-recorder-console {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 2147483647;
+  width: min(370px, calc(100vw - 32px));
+  color: var(--mx-text);
+  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+  background:
+    linear-gradient(135deg, rgba(200, 255, 56, 0.055), transparent 45%),
+    var(--mx-panel);
+  border: 1px solid var(--mx-line);
+  box-shadow:
+    0 22px 60px rgba(0, 0, 0, 0.45),
+    inset 0 1px rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  user-select: none;
+}
+
+#mx-recorder-console::before,
+#mx-recorder-console::after {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  content: "";
+  pointer-events: none;
+}
+
+#mx-recorder-console::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid var(--mx-lime);
+  border-left: 2px solid var(--mx-lime);
+}
+
+#mx-recorder-console::after {
+  right: -1px;
+  bottom: -1px;
+  border-right: 2px solid var(--mx-lime);
+  border-bottom: 2px solid var(--mx-lime);
+}
+
+.mx-console-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 62px;
+  padding: 14px 17px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mx-brand {
+  display: grid;
+  gap: 2px;
+}
+
+.mx-brand strong {
+  font-size: 15px;
+  letter-spacing: 0.08em;
+}
+
+.mx-brand span,
+.mx-format {
+  color: var(--mx-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.mx-status {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--mx-muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.mx-status i {
+  width: 8px;
+  height: 8px;
+  background: #e4b143;
+  border-radius: 50%;
+  box-shadow: 0 0 14px currentColor;
+}
+
+.mx-status.is-online {
+  color: var(--mx-lime);
+}
+
+.mx-status.is-online i {
+  background: var(--mx-lime);
+}
+
+.mx-status.is-error {
+  color: var(--mx-red);
+}
+
+.mx-status.is-error i {
+  background: var(--mx-red);
+}
+
+.mx-console-body {
+  padding: 17px;
+}
+
+.mx-readout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  margin-bottom: 15px;
+}
+
+.mx-readout span {
+  color: var(--mx-muted);
+  font-size: 12px;
+}
+
+.mx-readout time {
+  font: 800 38px/1 "Consolas", "SFMono-Regular", monospace;
+  letter-spacing: -0.07em;
+}
+
+.mx-record-button {
+  display: grid;
+  grid-template-columns: 38px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  min-height: 72px;
+  padding: 12px 16px;
+  color: #10170d;
+  font: inherit;
+  text-align: left;
+  background: var(--mx-lime);
+  border: 0;
+  cursor: pointer;
+  transition: filter 140ms ease, transform 140ms ease;
+}
+
+.mx-record-button:hover:not(:disabled) {
+  filter: brightness(1.07);
+  transform: translateY(-1px);
+}
+
+.mx-record-button:disabled {
+  color: #667064;
+  background: #29322c;
+  cursor: not-allowed;
+}
+
+.mx-record-button.is-recording {
+  color: #fff;
+  background: var(--mx-red);
+}
+
+.mx-record-icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.mx-record-icon i {
+  width: 10px;
+  height: 10px;
+  background: currentColor;
+  border-radius: 50%;
+}
+
+.mx-record-button.is-recording .mx-record-icon i {
+  border-radius: 1px;
+}
+
+.mx-record-copy {
+  display: grid;
+  gap: 3px;
+}
+
+.mx-record-copy b {
+  font-size: 15px;
+}
+
+.mx-record-copy small {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  opacity: 0.58;
+}
+
+.mx-arrow {
+  font-size: 25px;
+  line-height: 1;
+}
+
+.mx-message {
+  min-height: 20px;
+  margin: 12px 0 0;
+  color: var(--mx-muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.mx-message.is-error {
+  color: #ff8795;
+}
+
+.mx-download {
+  display: none;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  margin-top: 13px;
+  padding: 12px;
+  background: var(--mx-lime-soft);
+  border: 1px solid var(--mx-line);
+}
+
+.mx-download.is-visible {
+  display: grid;
+}
+
+.mx-download-copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.mx-download-copy strong {
+  font-size: 13px;
+}
+
+.mx-download-copy span {
+  overflow: hidden;
+  color: var(--mx-muted);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mx-download a {
+  padding: 9px 12px;
+  color: #11180e;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  background: var(--mx-lime);
+}
+
+.mx-console-foot {
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 17px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mx-console-foot span {
+  color: var(--mx-muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.mx-live-flag {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 2147483646;
+  display: none;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 12px;
+  color: #fff;
+  font: 800 11px/1 "Segoe UI", sans-serif;
+  letter-spacing: 0.16em;
+  background: rgba(255, 77, 98, 0.92);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.mx-live-flag.is-visible {
+  display: flex;
+}
+
+.mx-live-flag i {
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+@media (max-width: 700px) {
+  #mx-recorder-console {
+    right: 12px;
+    bottom: 12px;
+    width: calc(100vw - 24px);
+  }
+
+  .mx-readout time {
+    font-size: 32px;
+  }
+}

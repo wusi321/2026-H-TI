@@ -1,0 +1,17 @@
+id: rsimplegb
+name: web
+version: 2.0.0
+author: lll
+desc: MaixCAM Pro native WebRTC video stream only
+include:
+  - app.yaml
+  - main.py
+  - config.py
+  - web_stream.py
+icon: ''
+files:
+  - app.png
+  - app.yaml
+  - config.py
+  - main.py
+  - web_stream.py

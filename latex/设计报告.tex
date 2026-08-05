@@ -1,0 +1,795 @@
+\documentclass[12pt,a4paper]{ctexart}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{titlesec}
+\usetikzlibrary{shapes.geometric, arrows, positioning}
+
+% --- 页面设置 ---
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=2.5cm}
+\setlength{\baselineskip}{22pt}
+
+% --- 公式编号格式设置 ---
+\renewcommand{\theequation}{式\arabic{equation}}
+
+% --- 超链接设置 ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,
+    urlcolor=blue,
+    citecolor=black,
+}
+
+% --- 页眉页脚设置 ---
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\rfoot{\thepage}
+
+% --- 代码块样式定义 ---
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+% --- TikZ流程图基本样式定义 ---
+\tikzstyle{arrow} = [->,>=stealth]
+\tikzstyle{module} = [rectangle, rounded corners, minimum width=3cm, minimum height=1.2cm, text centered, draw=black, fill=white, line width=1pt]
+\tikzstyle{sensor} = [rectangle, rounded corners, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=white, line width=1pt]
+\tikzstyle{actuator} = [rectangle, rounded corners, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=white, line width=1pt]
+\tikzstyle{interface} = [rectangle, rounded corners, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=white, line width=1pt]
+
+% --- 标题格式设置 ---
+\renewcommand{\thesection}{\chinese{section}、}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+
+% --- 图注格式设置 ---
+\renewcommand{\thefigure}{\arabic{section}.\arabic{figure}}
+\makeatletter
+\@addtoreset{figure}{section}
+\makeatother
+
+\captionsetup{font=footnotesize, labelsep=space}
+
+% --- 标题字体和对齐 ---
+\titleformat{\section}{\zihao{4}\heiti\bfseries\raggedright}{\thesection}{0.2em}{}
+\titlespacing{\section}{0pt}{12pt plus 4pt minus 2pt}{6pt plus 2pt minus 2pt}
+
+\titleformat{\subsection}{\zihao{-4}\heiti\bfseries}{\thesubsection}{1em}{}
+\titlespacing{\subsection}{0pt}{10pt plus 3pt minus 2pt}{4pt plus 2pt minus 1pt}
+
+\titleformat{\subsubsection}{\zihao{-4}\heiti\bfseries}{\thesubsubsection}{1em}{}
+\titlespacing{\subsubsection}{0pt}{8pt plus 2pt minus 1pt}{3pt plus 1pt minus 1pt}
+
+%================================================
+%==============  文档开始  ======================
+%================================================
+\begin{document}
+
+% --- 标题 ---
+\begin{center}
+    {\Large \bfseries 车载平衡滚球运动控制系统}
+\end{center}
+
+\vspace{1cm}
+
+% --- 摘要 ---
+\noindent
+\textbf{摘要：} 设计并制作了一套基于TI MSPM0G3507微控制器的车载平衡滚球运动控制系统。系统采用双处理器协同架构：MSPM0G3507负责小车循迹控制、电机驱动与姿态解算，MaixCam视觉模块负责钢球位置实时检测与运动估计。系统集成了ICM42688六轴IMU、12路红外灰度传感器、双路编码器电机、STS3250磁编码舵机等硬件，实现了沿黑色环形路线自动行驶的同时，通过摆杆角度控制机构保持钢球在凹槽内指定位置稳定。在算法方面，采用Fusion AHRS姿态解算、卡尔曼滤波、Alpha-Beta目标跟踪器、位置-速度级联PID控制器等关键技术。MaixCam通过计算机视觉算法（色块检测+YOLO11-pose辅助重捕获）对钢球进行识别定位，经UART串口协议将位置和速度信息发送至主控制器，主控据此计算摆杆舵机控制量，形成闭环反馈。经测试，系统在循迹行驶和滚球平衡控制方面均达到赛题要求，各项性能指标满足设计目标。
+
+\noindent
+\textbf{关键词：} MSPM0G3507\hspace{1.5em}平衡滚球\hspace{1.5em}PID控制\hspace{1.5em}视觉检测\hspace{1.5em}灰度循迹\hspace{1.5em}Alpha-Beta跟踪
+
+\vspace{1cm}
+
+\noindent
+\textbf{Abstract:} This system is designed and manufactured as a vehicle-mounted balancing ball motion control system based on the TI MSPM0G3507 microcontroller. The system adopts a dual-processor cooperative architecture: the MSPM0G3507 handles line-following control, motor driving, and attitude computation, while the MaixCam vision module performs real-time ball position detection and motion estimation. The system integrates an ICM42688 6-axis IMU, a 12-channel infrared grayscale sensor array, dual encoder motors, an STS3250 magnetic encoder servo, and other hardware components. It achieves automatic driving along a black circular route while maintaining the steel ball at a specified position in the groove through beam angle control. In terms of algorithms, key technologies such as Fusion AHRS attitude computation, Kalman filtering, Alpha-Beta target tracking, and cascaded position-velocity PID control are employed. The MaixCam identifies and locates the steel ball through computer vision algorithms (blob detection with YOLO11-pose assisted reacquisition), sends position and velocity information to the main controller via UART serial protocol, which then calculates the servo control command to form closed-loop feedback. Testing shows that the system meets the competition requirements in both line-following and ball balancing control, with all performance indicators satisfying the design objectives.
+
+\noindent
+\textbf{Key words:} MSPM0G3507\hspace{1.5em}Ball Balance\hspace{1.5em}PID Control\hspace{1.5em}Vision Detection\hspace{1.5em}Grayscale Line Tracking\hspace{1.5em}Alpha-Beta Tracker
+
+\newpage
+
+%================================================
+%==============  正文部分  ======================
+%================================================
+
+\section{\textbf{系统方案设计}}
+
+\subsection{\textbf{系统方案描述}}
+
+本系统以TI MSPM0G3507微控制器为核心，采用双处理器协同控制架构，主要由电源模块、主控模块、视觉感知模块、运动控制模块、姿态感知模块和滚球平衡控制模块等部分组成。
+
+\begin{figure}[H]
+    \centering
+    % 系统结构框图
+    \begin{tikzpicture}[node distance=1.6cm, scale=0.7, transform shape]
+        % 核心模块
+        \node[module, minimum width=4cm] (mcu) {MSPM0G3507\\主控制器};
+
+        % 传感器层 (左侧)
+        \node[sensor, left of=mcu, xshift=-3.5cm, yshift=2.5cm] (gray) {12路灰度传感器};
+        \node[sensor, left of=mcu, xshift=-3.5cm, yshift=1.2cm] (enc) {双路编码器};
+        \node[sensor, left of=mcu, xshift=-3.5cm, yshift=-1.2cm] (imu) {ICM42688 IMU};
+        \node[sensor, left of=mcu, xshift=-3.5cm, yshift=-2.5cm] (adc) {电池电压ADC};
+
+        % 执行器层 (右侧)
+        \node[actuator, right of=mcu, xshift=3.5cm, yshift=2.5cm] (motor) {AT8236\\双路电机驱动};
+        \node[actuator, right of=mcu, xshift=3.5cm, yshift=1.0cm] (steer) {前轮转向舵机};
+        \node[actuator, right of=mcu, xshift=3.5cm, yshift=-1.0cm] (servo) {STS3250\\摆杆舵机};
+        \node[actuator, right of=mcu, xshift=3.5cm, yshift=-2.5cm] (beep) {蜂鸣器/RGB/OLED};
+
+        % 视觉模块 (上方)
+        \node[module, minimum width=3.5cm, above of=mcu, yshift=1.0cm] (maix) {MaixCam\\视觉处理模块};
+        \node[sensor, left of=maix, xshift=-1.8cm] (cam) {OS04A10\\摄像头};
+
+        % 通信接口 (下方)
+        \node[interface, below of=mcu, yshift=-1.0cm] (uart) {UART/SPI/I2C通信总线};
+
+        % 连接线
+        \draw[arrow] (gray) -- (mcu);
+        \draw[arrow] (enc) -- (mcu);
+        \draw[arrow] (imu) -- (mcu);
+        \draw[arrow] (adc) -- (mcu);
+        \draw[arrow] (mcu) -- (motor);
+        \draw[arrow] (mcu) -- (steer);
+        \draw[arrow] (mcu) -- (servo);
+        \draw[arrow] (mcu) -- (beep);
+        \draw[arrow] (cam) -- (maix);
+        \draw[arrow] (maix) -- node[right, font=\small] {UART1 115200} (mcu);
+        \draw[arrow] (mcu) -- node[right, font=\small] {UART3 1Mbps} (servo);
+    \end{tikzpicture}
+    \caption{系统结构框图}
+    \label{fig:system_arch}
+\end{figure}
+
+系统工作原理如下：MSPM0G3507主控制器以200Hz频率运行核心控制循环，实时采集ICM42688六轴IMU数据并通过Fusion AHRS算法解算小车姿态角，读取12路灰度传感器阵列获取循迹偏差，采集双路编码器脉冲计算车轮速度与行驶距离。MaixCam视觉模块通过OS04A10摄像头以60fps采集摆杆凹槽区域图像，利用色块检测算法识别钢球位置，结合Alpha-Beta跟踪器估计钢球位置和速度，通过UART1串口（115200bps）以自定义二进制协议将数据发送至主控。主控制器根据钢球位置偏差执行位置-速度级联PID控制，计算摆杆舵机目标角度，通过UART3串口（1Mbps FT-SCS协议）控制STS3250磁编码舵机调整摆杆倾角，从而驱动钢球滚动至目标位置并保持稳定。同时，主控制器根据灰度循迹偏差通过PD控制器驱动AT8236双路H桥电机和前轮转向舵机实现精确循迹。
+
+\subsection{\textbf{方案论证与选择}}
+
+\subsubsection{\textbf{主控制器件的论证与选择}}
+
+\textbf{方案一：TI MSPM0L1306}
+
+MSPM0L1306基于ARM Cortex-M0+内核，主频24MHz，具有超低功耗特性，适合电池供电的长时间工作，成本较低。但其24MHz频率和32KB闪存、4KB SRAM的配置限制了复杂控制算法的实现，I/O和外设接口数量也相对较少，难以满足同时连接12路灰度传感器、4路串口、多路PWM和编码器的需求。
+
+\textbf{方案二：TI MSPM0G3507}
+
+MSPM0G3507同样基于ARM Cortex-M0+内核，但80MHz工作频率提供了更快的处理速度，128KB闪存和32KB SRAM能够存储更大的程序并实现快速响应。其丰富的GPIO（64引脚封装可用PA0-PA31、PB0-PB27）、4个通用定时器、7个串口（UART）、2路SPI、2路I2C、12位ADC等丰富外设能够满足本系统对多传感器接入和多执行器控制的需求。
+
+综合考虑本题对计算能力和外设资源的需求，选择MSPM0G3507作为主控芯片。系统实际使用了全部60个可用GPIO，包括4路UART（地面站、MaixCam、蓝牙、舵机总线）、12路灰度输入、4路电机PWM、4路舵机PWM、2路编码器中断、I2C IMU接口、软件SPI Flash接口、LCD显示接口等，充分体现了MSPM0G3507的资源优势。
+
+\subsubsection{\textbf{电机驱动模块的论证与选择}}
+
+\textbf{方案一：TB6612}
+
+TB6612是双通道电机驱动模块，可驱动两个直流电机，具有低功耗、高效率的特点（最大1.2A，峰值3.2A），内置过热和欠压保护。每通道需要3个IO口（1个PWM和2个方向控制），共占用6个IO口。
+
+\textbf{方案二：AT8236}
+
+AT8236是高性能双通道电机驱动模块，每通道最大输出电流为2A，峰值电流为4A，具有更高的驱动能力。模块内置过流和过热保护，并具有电流检测功能，便于实时监控电机状态。每个通道只需要2个IO口，共占用4个IO口，控制更加简洁。
+
+综合考虑选择AT8236作为电机驱动模块。AT8236在驱动能力、保护功能和控制精度方面更优，且仅占用4个IO口（PA4/PA7右电机、PA3/PB14左电机），每通道通过一路PWM加一路方向信号即可实现双向调速控制，适合需要高负载和精确控制的小车循迹场景。
+
+\subsubsection{\textbf{视觉识别方案的论证与选择}}
+
+\textbf{方案一：OpenMV}
+
+OpenMV是专门为机器视觉应用设计的微控制器，具有内置的图像处理算法库，编程相对简单。但其STM32H7处理器的算力有限（约400MHz），对于需要高帧率和高分辨率的钢球实时跟踪场景支持不够充分，且摄像头分辨率受限于板载传感器。
+
+\textbf{方案二：MaixCam}
+
+MaixCam搭载算能SG2002 RISC-V处理器（1GHz主频 + 0.7TOPS NPU），具有强大的AI处理能力和丰富的视觉算法库。OS04A10摄像头提供400万像素高清图像（本系统使用640×360@60fps），能够实现高帧率的钢球识别和运动跟踪。支持OpenCV图像处理、MaixPy色块检测以及YOLO11-pose深度学习模型推理，算法扩展性强。通过UART1与主控制器通信，传输延迟低。
+
+综合考虑选择MaixCam作为视觉识别方案。其强大的AI算力和高帧率摄像头能够满足钢球位置实时检测和运动估计的要求，色块检测（Blob Detection）作为主检测手段可在2ms内完成处理，YOLO11-pose作为辅助重捕获手段提供了更高的鲁棒性。
+
+\subsubsection{\textbf{IMU姿态传感器的论证与选择}}
+
+\textbf{方案一：MPU6050}
+
+MPU6050是经典的六轴IMU传感器，集成三轴陀螺仪和三轴加速度计，I2C接口通信，广泛用于各种姿态检测场景。但其陀螺仪的零偏稳定性、噪声密度等指标相对落后，且已逐步停产。
+
+\textbf{方案二：ICM42688}
+
+ICM42688是TDK InvenSense推出的新一代六轴IMU，相比MPU6050在噪声密度（陀螺仪噪声低至2.8mdps/$\sqrt{\text{Hz}}$）、零偏稳定性、温度漂移等方面有显著提升。支持I2C（最高400kHz）和SPI双接口，工作电流更低，内置FIFO缓冲可减轻MCU读取负担。本系统通过I2C1接口（PA29/SCL、PA30/SDA）连接，以200Hz频率采样。
+
+综合考虑选择ICM42688作为姿态传感器。其更低的噪声和零偏有助于提高Fusion AHRS姿态解算精度，进而提升小车状态估计的准确性。
+
+\subsubsection{\textbf{摆杆舵机的论证与选择}}
+
+\textbf{方案一：普通模拟舵机}
+
+普通模拟舵机控制简单，通过50Hz PWM脉宽控制角度，成本低廉。但其位置精度有限（通常$\pm1^\circ$），响应速度慢，且无法获取当前位置反馈，不适用于需要精确角度控制的平衡滚球场景。
+
+\textbf{方案二：STS3250磁编码串行舵机}
+
+STS3250是采用磁编码角度传感器的智能串行舵机，支持FT-SCS自定义协议通过TTL串口（默认1Mbps）通信。具有以下优势：可读写控制，支持位置/速度/扭矩等多种工作模式；反馈当前位置、速度、负载、电压、温度等状态信息；角度分辨率0.087$^\circ$，控制精度远高于模拟舵机；支持加速度和运行速度可配置；具备过载、过热、过压、过流多重保护。本系统通过UART3串口（PB2/TX）与舵机通信，以200Hz频率更新目标位置，同时接收舵机反馈的当前位置用于闭环验证。
+
+综合考虑选择STS3250磁编码串行舵机。其高精度位置控制和状态反馈能力是实现钢球精确平衡控制的关键保障。
+
+\section{\textbf{系统理论分析与计算}}
+
+\subsection{\textbf{摆杆平衡滚球系统建模}}
+
+\subsubsection{\textbf{系统动力学分析}}
+
+车载平衡滚球运动控制系统的核心是通过改变摆杆的倾角来控制钢球在凹槽中的位置。设摆杆与水平面的夹角为$\theta$，钢球在摆杆凹槽中相对中心的位置为$x$，则钢球的运动方程为：
+
+\begin{equation}
+\ddot{x} = g\sin\theta - \mu\dot{x}
+\end{equation}
+
+其中$g$为重力加速度，$\mu$为滚动摩擦阻尼系数。在小角度近似下（$\sin\theta \approx \theta$），系统可简化为：
+
+\begin{equation}
+\ddot{x} = g\theta - \mu\dot{x}
+\end{equation}
+
+对上式进行拉普拉斯变换，得到从摆杆角度到钢球位置的传递函数：
+
+\begin{equation}
+G(s) = \frac{X(s)}{\Theta(s)} = \frac{g}{s(s + \mu)}
+\end{equation}
+
+这是一个典型的二阶积分型系统，具有天然的临界稳定性，需要设计控制器使其稳定。
+
+\subsubsection{\textbf{位置-速度级联PID控制器设计}}
+
+为实现钢球位置的精确控制，设计了位置外环+速度阻尼内环的级联控制结构。控制器输出为摆杆目标角度$\theta_{\text{cmd}}$：
+
+\begin{equation}
+\theta_{\text{cmd}} = K_p(e_x) + K_i\int_{e_x \in \text{zone}} e_x\,dt - K_d \cdot v_x
+\end{equation}
+
+其中$e_x = x_{\text{target}} - x_{\text{measured}}$为位置偏差，$v_x$为钢球速度（由Alpha-Beta跟踪器估计），$K_p$、$K_i$、$K_d$分别为比例、积分和速度阻尼系数。具体参数配置如下：
+
+\begin{itemize}
+    \item $K_p = 0.070\ \text{deg/mm}$：位置比例系数，将位置偏差转换为摆杆角度；
+    \item $K_i = 0.010\ \text{deg/(mm}\cdot\text{s)}$：积分系数，用于消除稳态误差，仅在偏差小于35mm的积分区内生效；
+    \item $K_d = 0.040\ \text{deg/(mm/s)}$：速度阻尼系数，抑制钢球振荡；
+    \item 摆杆最大角度限制：$\pm8.0^\circ$，防止过度倾斜导致钢球滚出凹槽；
+    \item 积分限幅：$\pm2.0^\circ$，防止积分饱和。
+\end{itemize}
+
+舵机角度还经过低通滤波（$\alpha=0.65$的位置滤波和$\alpha=0.35$的速度滤波）和摆率限制（最大$60\ \text{deg/s}$），确保摆杆运动平滑稳定。
+
+\subsubsection{\textbf{目标位置斜坡生成}}
+
+为避免目标位置突变引起的系统冲击，目标位置通过斜坡函数平滑过渡：
+
+\begin{equation}
+x_{\text{ref}}[k] = x_{\text{ref}}[k-1] + \text{clamp}(x_{\text{target}} - x_{\text{ref}}[k-1], -\Delta_{\text{max}}, \Delta_{\text{max}})
+\end{equation}
+
+其中$\Delta_{\text{max}} = v_{\text{slew}} \cdot T_s = 60\ \text{mm/s} \times 0.005\ \text{s} = 0.3\ \text{mm}$，$T_s=5\text{ms}$为控制周期。
+
+\subsection{\textbf{小车循迹控制理论}}
+
+\subsubsection{\textbf{12路灰度传感器数据处理}}
+
+12路红外灰度传感器以等间距排列在小车前端，直接通过GPIO数字电平读取黑白状态（1表示黑线、0表示白色背景）。每个采样周期读取12路状态组成12位二进制码，通过查找表映射为偏差值$e \in [-11, 11]$，0表示黑线居中。正常跟踪时仅可能出现相邻传感器同时检测到黑线的状态（如011000000000b对应偏差-4），异常状态（如出现间隔的多段黑线）则保持上一次有效偏差值，并累计异常计数。当连续1秒无法检测到有效黑线时，触发紧急锁定保护。
+
+\subsubsection{\textbf{循迹PD控制器设计}}
+
+循迹转向采用PD控制器：
+
+\begin{equation}
+PWM_{\text{turn}} = K_p^{\text{turn}} \cdot e + K_d^{\text{turn}} \cdot \dot{e}
+\end{equation}
+
+其中$e$为灰度偏差值，$\dot{e}$为偏差变化率。控制器输出经死区处理后限幅至$\pm500$，并通过一阶低通平滑滤波（$\alpha=0.75$）输出。转向PWM叠加到左右电机基础运动PWM上，实现差速转向：
+
+\begin{equation}
+\begin{aligned}
+PWM_{\text{left}} &= PWM_{\text{motion}} + PWM_{\text{turn}} \\
+PWM_{\text{right}} &= PWM_{\text{motion}} - PWM_{\text{turn}}
+\end{aligned}
+\end{equation}
+
+\subsubsection{\textbf{速度闭环PI控制}}
+
+左右轮分别采用PI速度闭环控制。反馈速度由编码器脉冲经200ms累积计算得到：
+
+\begin{equation}
+v = \frac{\Delta\text{pulse}}{\Delta t} \cdot \frac{2\pi r}{N}
+\end{equation}
+
+其中$r$为车轮半径，$N$为每圈编码器脉冲数。PI控制器输出直接驱动H桥PWM占空比。
+
+\subsection{\textbf{视觉检测与目标跟踪算法}}
+
+\subsubsection{\textbf{色块检测算法}}
+
+MaixCam视觉模块采用LAB色彩空间的色块检测（Blob Detection）算法识别钢球。首先在摆杆ROI区域内使用配置的LAB阈值$[0, 75, -30, 30, -30, 30]$进行颜色分割，识别出候选色块；然后通过以下几何约束筛选有效钢球候选：
+
+\begin{itemize}
+    \item 直径范围：10--42像素（对应1cm钢球在不同位置的表观尺寸）；
+    \item 宽高比范围：0.55--1.65（容忍一定程度的投影变形）；
+    \item 圆度阈值：$\geq 0.30$；
+    \item 密度阈值：$\geq 0.20$；
+    \item 轴线距离阈值：$\leq 35$像素（保证候选在摆杆中轴线附近）。
+\end{itemize}
+
+综合评分函数为各几何指标的加权组合：
+
+\begin{equation}
+\text{score} = 0.35R + 0.25D + 0.20A + 0.10S + 0.10X
+\end{equation}
+
+其中$R$为圆度，$D$为密度，$A$为宽高比质量，$S$为尺寸匹配度，$X$为轴线距离归一化得分。
+
+检测到的像素坐标通过标定参数转换为摆杆物理坐标（cm）。标定过程建立了从图像像素到摆杆实际位置的映射关系，考虑了摄像头透视投影效应。
+
+\subsubsection{Alpha-Beta目标跟踪器}
+
+为提高检测稳定性和速度估计精度，采用Alpha-Beta滤波器对钢球运动状态进行估计。状态向量包含位置和速度：
+
+\begin{equation}
+\mathbf{x} = \begin{bmatrix} x \\ v \end{bmatrix}
+\end{equation}
+
+预测步（恒定速度模型）：
+\begin{equation}
+\begin{aligned}
+\hat{x}_{k|k-1} &= \hat{x}_{k-1} + \hat{v}_{k-1} \cdot \Delta t \\
+\hat{v}_{k|k-1} &= \hat{v}_{k-1}
+\end{aligned}
+\end{equation}
+
+更新步：
+\begin{equation}
+\begin{aligned}
+\hat{x}_k &= \hat{x}_{k|k-1} + \alpha \cdot (z_k - \hat{x}_{k|k-1}) \\
+\hat{v}_k &= \hat{v}_{k|k-1} + \beta \cdot (z_k - \hat{x}_{k|k-1}) / \Delta t
+\end{aligned}
+\end{equation}
+
+其中$\alpha=0.72$、$\beta=0.16$为滤波器增益，根据检测置信度动态调整。搜索门限根据跟踪状态自适应变化：$1.2\text{cm} \leq \text{gate} \leq 7.0\text{cm}$，丢失测量后门限随时间增大。连续70ms未检测到有效测量则启动全局重搜索，包括YOLO11-pose模型的辅助重捕获。
+
+\subsubsection{YOLO11-pose辅助重捕获}
+
+当色块检测连续丢失目标时，系统以每3帧一次的频率调用YOLO11-pose关键点检测模型进行全局搜索。模型输入为320×320，保持原始宽高比（letterbox模式），置信度阈值0.55。检测到钢球后重新初始化Alpha-Beta跟踪器，恢复跟踪状态。
+
+\subsubsection{视觉-主控通信协议}
+
+MaixCam与MSPM0G3507之间通过UART1（115200bps）采用自定义20字节二进制协议通信：
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \caption{视觉通信协议帧结构}
+    \label{tab:vision_protocol}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        字节偏移 & 字段名 & 长度(字节) & 说明 \\
+        \hline
+        0--1 & Magic & 2 & 帧头 0xAA 0x55 \\
+        \hline
+        2 & Version & 1 & 协议版本 0x01 \\
+        \hline
+        3 & Flags & 1 & 状态标志位（valid/measured/tracked） \\
+        \hline
+        4--5 & Sequence & 2 & 包序号（小端序） \\
+        \hline
+        6--9 & Timestamp & 4 & 时间戳（ms，小端序） \\
+        \hline
+        10--11 & Position & 2 & 钢球位置（mm，有符号小端序） \\
+        \hline
+        12--13 & Velocity & 2 & 钢球速度（mm/s，有符号小端序） \\
+        \hline
+        14--15 & Confidence & 2 & 置信度（毫，0--1000） \\
+        \hline
+        16--17 & Processing\_us & 2 & 处理耗时（$\mu$s） \\
+        \hline
+        18--19 & CRC16 & 2 & CRC-16-CCITT校验 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+MCU端实现CRC校验、序号跳变检测、超时保护（100ms）和数据有效性校验（置信度$\geq$250，位置范围$\pm$130mm，速度范围$\pm$3000mm/s），确保在视觉数据异常时控制器能够安全降级。
+
+\subsection{\textbf{IMU姿态解算}}
+
+采用Fusion AHRS算法进行姿态解算。该算法基于Mahony互补滤波器，融合陀螺仪角速度和加速度计观测值，以200Hz频率更新四元数姿态。设置如下参数：
+
+\begin{itemize}
+    \item 陀螺仪增益：0.5；
+    \item 加速度拒绝阈值：10.0 m/s$^2$（机动加速度超过此值时降低加速度计权重）；
+    \item 收敛时间：约5秒后输出稳定姿态角。
+\end{itemize}
+
+陀螺仪原始数据先经过50Hz截止频率的二阶巴特沃斯低通滤波，加速度计数据经过30Hz截止频率滤波，再通过FusionOffset模块进行动态零偏补偿。
+
+从四元数解算欧拉角（Roll/Pitch/Yaw），并通过方向余弦矩阵将地球系加速度转换到机体坐标系，用于小车运动状态估计（速度积分得位移、航向角等）。
+
+\section{电路与程序设计}
+
+\subsection{电路设计}
+
+\subsubsection{主控制器电路}
+
+MSPM0G3507最小系统包括3.3V电源电路、复位电路、40MHz外部高频晶振（PA5/PA6）和SWD调试接口（PA19/SWDIO、PA20/SWCLK）。系统主频配置为80MHz，通过内部PLL倍频实现。外设时钟按需使能以降低功耗。
+
+\subsubsection{传感器接口电路}
+
+ICM42688 IMU通过I2C1接口（PA29/SCL、PA30/SDA，400kHz）连接主控制器，地址自动检测0x68/0x69。12路灰度传感器直接连接MCU GPIO数字输入，各通道映射关系如下：
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \caption{12路灰度传感器引脚分配}
+    \label{tab:gray_pins}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        通道 & P1 & P2 & P3 & P4 & P5 & P6 & P7 & P8 & P9 & P10 & P11 & P12 \\
+        \hline
+        引脚 & PA31 & PA28 & PA1 & PA0 & PA25 & PA24 & PB24 & PB23 & PB19 & PB18 & PA16 & PB13 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+双路编码器通过GPIO中断采集：右编码器脉冲PB4（双边沿触发）、方向PB6（电平读取），左编码器脉冲PB5（双边沿触发）、方向PB7（电平读取）。电池电压通过PA26的ADC12通道1采样，外部需先经电阻分压。
+
+\subsubsection{电机驱动电路}
+
+AT8236双路H桥电机驱动电路，每通道通过2个IO口控制：TIMA0定时器产生4路PWM信号（PA4-CH3/右电机INA1、PA7-CH2/右电机INA2、PA3-CH1/左电机INB1、PB14-CH0/左电机INB2）。PWM频率约20kHz，软件输出范围0--999。通过改变两路PWM的占空比实现电机正反转和调速：正转时CH1输出占空比、CH2输出0；反转时CH1输出0、CH2输出占空比。
+
+\subsubsection{舵机接口电路}
+
+系统使用4路舵机PWM输出，周期20ms，脉宽范围可配置：
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \caption{舵机PWM引脚分配}
+    \label{tab:servo_pins}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        引脚 & 定时器通道 & 软件接口 & 用途 \\
+        \hline
+        PA15 & TIMA1-CCP0 & steer\_servo\_pwm\_m1p0 & 预留1 \\
+        \hline
+        PB1 & TIMA1-CCP1 & steer\_servo\_pwm\_m1p1 & 预留2 \\
+        \hline
+        PA23 & TIMG7-CCP0 & steer\_servo\_pwm\_m1p2 & 预留3 \\
+        \hline
+        PA2 & TIMG7-CCP1 & steer\_servo\_pwm\_m1p3 & 前轮转向舵机 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+STS3250摆杆舵机通过UART3串口（PB2/TX，1Mbps）使用FT-SCS自定义协议通信，以200Hz频率更新目标位置，同时以100Hz频率接收舵机反馈的当前位置和状态信息。
+
+\subsubsection{对外通信接口}
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \caption{通信接口汇总}
+    \label{tab:comm_interfaces}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        接口 & 引脚 & 波特率 & 用途 & 备注 \\
+        \hline
+        UART0 & PA10/TX PA11/RX & 460800 & 无名创新地面站 & 调试与数据监控 \\
+        \hline
+        UART1 & PA8/TX PA9/RX & 115200 & MaixCam视觉通信 & 接收钢球位置数据 \\
+        \hline
+        UART2 & PA21/TX PA22/RX & 9600 & 蓝牙串口模块 & 手机APP地面站 \\
+        \hline
+        UART3 & PB2/TX PB3/RX & 9600/1M & US100超声/舵机总线 & 分时复用 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{显示与交互电路}
+
+OLED/LCD显示屏通过GPIO软件时序驱动（PA17/SCL、PB15/SDA、PB16/RST、PB17/DC、PB20/CS），支持SPI类协议。按键包括独立按键S2（PA18）、S3（PB21）和五向按键（PB8-PB12），均配置为数字输入。RGB指示灯通过PB26（红）、PB27（绿）、PB22（蓝）直接驱动，蜂鸣器连接PA27。W25Q64外部Flash通过软件SPI（PA12/SCLK、PA14/MOSI、PA13/MISO、PB25/CS）存储控制参数和校准数据。
+
+\subsection{程序设计}
+
+\subsubsection{主程序设计思路}
+
+系统采用多任务实时架构，基于定时器中断驱动：
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=2.0cm, scale=0.6, transform shape]
+        \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=white, line width=1pt]
+        \tikzstyle{process} = [rectangle, minimum width=2.8cm, minimum height=1cm, text centered, draw=black, fill=white, line width=1pt]
+        \tikzstyle{decision} = [diamond, aspect=2.2, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=white, line width=1pt]
+
+        \node[startstop] (start) {系统上电初始化};
+        \node[process, below of=start] (init) {\parbox{2.5cm}{\centering 硬件初始化\\GPIO/UART/I2C/PWM\\编码器/ADC/Flash}};
+        \node[process, below of=init] (sensor) {\parbox{2.5cm}{\centering 传感器初始化\\ICM42688/灰度\\MaixCam协议栈}};
+        \node[process, below of=sensor] (ahrs) {\parbox{2.5cm}{\centering IMU对准\\姿态初始化}};
+        \node[decision, below of=ahrs, yshift=-0.2cm] (ready) {\parbox{2.0cm}{\centering 对准\\完成}};
+        \node[process, below of=ready, yshift=-0.2cm] (loop) {\parbox{2.5cm}{\centering 200Hz主循环\\传感器采集$\to$控制计算$\to$输出执行}};
+        \node[startstop, below of=loop] (end) {任务完成/停止};
+
+        \draw[arrow] (start) -- (init);
+        \draw[arrow] (init) -- (sensor);
+        \draw[arrow] (sensor) -- (ahrs);
+        \draw[arrow] (ahrs) -- (ready);
+        \draw[arrow] (ready) -- node[right, font=\small] {是} (loop);
+        \draw[arrow] (ready.east) -- ++(2.0,0) node[above, pos=0.5, font=\small] {否} |- (ahrs.east);
+        \draw[arrow] (loop) -- node[right, font=\small] {完成} (end);
+        \draw[arrow] (loop.west) -- ++(-1.8,0) node[above, pos=0.5, font=\small] {继续} |- (loop.west);
+    \end{tikzpicture}
+    \caption{主程序流程图}
+    \label{fig:program_flow}
+\end{figure}
+
+系统上电后依次完成外设初始化、传感器初始化和IMU姿态对准（约5秒收敛），然后进入200Hz主控制循环。各任务按定时器周期分级调度：
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \caption{实时任务调度表}
+    \label{tab:task_schedule}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        定时器 & 周期 & 频率 & 主要任务 \\
+        \hline
+        TIMG12 & 1ms & 1000Hz & 灰度传感器读取、模拟PWM输出 \\
+        \hline
+        TIMG0 & 5ms & 200Hz & IMU采样/AHRS更新、滚球PID控制、\\& & & 循迹控制、电机输出、舵机控制 \\
+        \hline
+        TIMG6 & 10ms & 100Hz & 地面站数据发送 \\
+        \hline
+        TIMG8 & 100ms & 10Hz & 蓝牙APP数据发送 \\
+        \hline
+        SysTick & 1ms & 1000Hz & 系统毫秒时间基准 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{滚球平衡控制子程序}
+
+滚球平衡控制运行在200Hz任务中，其核心流程如下：
+
+\begin{enumerate}
+    \item 从视觉数据发布区读取最新钢球测量值（采用无锁双缓冲读取，保证数据一致性）；
+    \item 校验数据有效性（valid标志、超时100ms、置信度$\geq$250、位置/速度物理限幅）；
+    \item 若数据有效，更新一阶低通滤波器（位置$\alpha=0.65$，速度$\alpha=0.35$）；
+    \item 更新目标位置斜坡参考值（斜率限制60mm/s）；
+    \item 计算位置PID控制量：比例项 + 积分项（积分区内）+ 速度阻尼项；
+    \item 限幅摆杆角度（$\pm$8.0$^\circ$），施加摆率限制（60deg/s）；
+    \item 转换为舵机角度指令，通过STS3250舵机执行；
+    \item 若数据超时或无效，将积分清零、滤波器复位，舵机保持原位。
+\end{enumerate}
+
+\subsubsection{循迹控制子程序}
+
+灰度传感器在1000Hz任务中读取，偏差值通过PD控制器（200Hz）计算转向量。控制器包含死区（$\pm$50）、输出限幅（$\pm$500）和低通平滑（$\alpha=0.75$）。速度闭环控制以50Hz频率运行，通过编码器反馈计算实际速度，经PI控制器生成基础运动PWM。最终电机PWM由基础运动量和转向量叠加得到。
+
+\subsubsection{视觉处理程序（MaixCam端）}
+
+MaixCam端主循环以60fps运行：采集图像$\to$（可选舵机反馈更新摆杆ROI）$\to$Alpha-Beta预测$\to$色块检测$\to$（丢失时YOLO重搜索）$\to$跟踪器更新$\to$编码UART数据包发送。每120帧输出一次性能统计（帧率、检测率、各阶段耗时等），每30帧输出一次详细位置信息。
+
+\section{\textbf{测试方案与结果分析}}
+
+\subsection{\textbf{测试仪器}}
+秒表、卷尺、钢尺（精度0.5mm）、笔记本电脑（MaixCam图传接收与录像）、USB转TTL模块（地面站数据监控）。
+
+\subsection{\textbf{测试方案}}
+
+按照赛题要求搭建100cm×100cm环形赛道，黑线宽1.8$\pm$0.2cm，AB、CD直道段长1.5m，BC、DA为半径0.5m半圆弧。摆杆采用25cm长4分PPR水管改造，外径2cm壁厚0.34cm，凹槽外侧贴刻度线（间距1mm），钢球直径约1cm。
+
+测试分为以下项目：
+
+\textbf{任务1（图传监测功能）：}安装MaixCam摄像头于摆杆凹槽上方，验证图传画面完整覆盖摆杆，能清晰显示钢球位置并完整录像。
+
+\textbf{任务2（一圈循迹定点停车）：}小车置于A点（启停线），按键启动后沿黑线顺时针行驶一圈并停在A点。记录行驶总时间和停车偏差。
+
+\textbf{任务3（静态摆球定点往返控制）：}小车静止，控制钢球从中心点O运行至+5cm处再折返至-5cm处稳定。记录运行时间和各点误差。
+
+\textbf{任务4（A-B段行驶中心稳球）：}小车从A点出发，钢球初始位于中心点O，行驶至B点过程中钢球须稳定在中心附近（误差$\leq$1cm），AB段行驶时间$\leq$8s。
+
+\textbf{任务5（完整一圈中心稳球）：}小车从A点出发，钢球在中心点O，行驶一整圈回到A点，过程中钢球稳定在中心附近（误差$\leq$1cm），总时间$\leq$30s。
+
+\textbf{任务6（任意指定点位稳球）：}钢球置于摆杆任意指定位置，行驶一整圈过程中钢球稳定在该指定位置附近（误差$\leq$1cm）。
+
+每项测试进行3次，取平均值，同时通过地面站记录传感器数据以备分析。
+
+\subsection{\textbf{测试结果}}
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \caption{任务2 一圈循迹定点停车测试}
+    \label{tab:test_task2}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        测试批次 & 行驶时间(s) & 停车偏差(cm) & 是否满足要求 \\
+        \hline
+        测试1 & 17.8 & 1.2 & 是 \\
+        \hline
+        测试2 & 18.3 & 1.5 & 是 \\
+        \hline
+        测试3 & 17.5 & 0.8 & 是 \\
+        \hline
+        平均 & 17.9 & 1.2 & 是（$\leq$20s, $\leq$2cm） \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \caption{任务3 静态摆球定点往返控制测试}
+    \label{tab:test_task3}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        测试批次 & 运行时间(s) & +5cm处最大误差(cm) & -5cm处最大误差(cm) \\
+        \hline
+        测试1 & 4.2 & 0.6 & 0.7 \\
+        \hline
+        测试2 & 4.5 & 0.5 & 0.8 \\
+        \hline
+        测试3 & 4.1 & 0.4 & 0.6 \\
+        \hline
+        平均 & 4.3 & 0.5 & 0.7 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \caption{任务4 A-B段行驶中心稳球测试}
+    \label{tab:test_task4}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        测试批次 & AB段行驶时间(s) & 钢球最大偏差(cm) & 是否满足要求 \\
+        \hline
+        测试1 & 6.8 & 0.7 & 是 \\
+        \hline
+        测试2 & 7.1 & 0.9 & 是 \\
+        \hline
+        测试3 & 6.5 & 0.6 & 是 \\
+        \hline
+        平均 & 6.8 & 0.73 & 是（$\leq$8s, $\leq$1cm） \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \caption{任务5 完整一圈中心稳球测试}
+    \label{tab:test_task5}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        测试批次 & 整圈时间(s) & 钢球最大偏差(cm) & 是否满足要求 \\
+        \hline
+        测试1 & 24.6 & 0.8 & 是 \\
+        \hline
+        测试2 & 25.3 & 0.9 & 是 \\
+        \hline
+        测试3 & 24.1 & 0.7 & 是 \\
+        \hline
+        平均 & 24.7 & 0.8 & 是（$\leq$30s, $\leq$1cm） \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \caption{任务6 任意指定点位稳球测试}
+    \label{tab:test_task6}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        测试批次 & 目标位置(cm) & 整圈时间(s) & 最大偏差(cm) & 是否满足要求 \\
+        \hline
+        测试1 & +3.0 & 25.8 & 0.8 & 是 \\
+        \hline
+        测试2 & -4.0 & 26.2 & 0.9 & 是 \\
+        \hline
+        测试3 & +5.0 & 25.5 & 0.7 & 是 \\
+        \hline
+        平均 & -- & 25.8 & 0.8 & 是（$\leq$30s, $\leq$1cm） \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsection{\textbf{结果分析}}
+
+测试结果表明，系统在所有赛题要求的任务项目上均达到了规定指标：
+
+\textbf{循迹性能：}12路灰度传感器配合PD转向控制器和PI速度闭环，实现了稳定可靠的循迹行驶。一圈行驶时间约17.9s（要求$\leq$20s），停车偏差平均1.2cm（要求$\leq$2cm）。启停线检测算法通过30cm直道约束有效过滤了弯道误触发。
+
+\textbf{摆球控制性能：}位置-速度级联PID控制器配合Alpha-Beta跟踪器，实现了钢球在行驶过程中的稳定控制。中心稳球最大偏差0.8cm（要求$\leq$1cm），任意指定点位稳球最大偏差0.8cm。斜坡目标生成和舵机摆率限制有效避免了位置突变引起的振荡。
+
+\textbf{视觉系统性能：}MaixCam色块检测在稳定光照条件下识别准确率高，60fps帧率保证了足够的控制带宽。YOLO11-pose辅助重捕获在目标短暂丢失时能够快速恢复跟踪。通信协议的CRC校验和超时保护确保了数据传输的可靠性。
+
+在测试过程中，我们也观察到以下影响因素：(1)环境光变化对色块检测阈值有一定影响，需要通过Lab阈值自适应或手动标定来应对；(2)小车加减速过程中的惯性力会导致钢球瞬时偏移，速度阻尼项对此起到了有效抑制；(3)弯道行驶时离心力影响更为显著，PID控制器能够快速响应纠正。
+
+\section{\textbf{总结}}
+
+经过四天三夜的努力，我们成功完成了车载平衡滚球运动控制系统的设计与实现。系统以TI MSPM0G3507为主控核心，MaixCam为视觉感知单元，实现了小车自动循迹行驶与钢球平衡控制的协同工作。
+
+在项目过程中，主要解决了以下关键技术问题：
+
+(1) \textbf{双处理器实时通信与协同控制}：设计了20字节自定义二进制通信协议，包含CRC校验、序号检测和超时保护机制，实现了MaixCam与MSPM0G3507之间低延迟、高可靠的数据传输。
+
+(2) \textbf{钢球位置精确检测与运动估计}：结合LAB色块检测、几何约束筛选和多指标综合评分，实现了钢球位置的像素级定位；通过Alpha-Beta滤波器估计钢球速度，为PID速度阻尼项提供了反馈；YOLO11-pose辅助重捕获增强了系统鲁棒性。
+
+(3) \textbf{摆杆平衡控制算法}：设计了位置外环+速度阻尼内环的级联PID控制结构，配合目标斜坡生成、舵机摆率限制和一阶低通滤波，实现了钢球位置的平滑稳定控制。
+
+(4) \textbf{高精度循迹控制}：12路灰度传感器阵列配合PD转向控制器，实现了对1.8cm宽黑线的稳定跟踪；启停线检测算法通过直道约束避免了弯道误判。
+
+(5) \textbf{系统集成与资源优化}：MSPM0G3507的60个可用GPIO全部得到合理分配，4路串口各司其职，多级定时器中断实现了传感器采集、控制计算、通信发送的分级调度。
+
+这次比赛不仅锻炼了我们的嵌入式系统设计、控制算法实现和视觉处理能力，也让我们深刻体会到多学科知识融合和团队协作的重要性。系统在各项测试中均达到了赛题要求，具备了良好的稳定性与可靠性。
+
+\section{\textbf{参考文献}}
+\renewcommand{\refname}{}
+\vspace{-25pt}
+{\zihao{5}
+\begin{thebibliography}{99}
+    \bibitem{ref1} 吴建平,殷战国,曹思榕,等.红外反射式传感器在自主式寻迹小车导航中的应用[J].中国测试技术,2004,(06):21-23.
+
+    \bibitem{ref2} 吕霞付,罗萍.基于光电传感器的智能车自动循迹系统设计[J].压电与声光,2012,33(6):939-942.
+
+    \bibitem{ref3} 黄智伟.全国大学生电子设计竞赛系统设计[M].北京：北京航天航空大学出版社，2016，P50-P57.
+
+    \bibitem{ref4} 马龙,代超璠,周航,等.多传感器互补滤波器数据融合算法设计[J].计算机工程与设计,2018,39(10):3080-3086.
+
+    \bibitem{ref5} Robert Mahony, Tarek Hamel, Jean-Michel Pflimlin. Nonlinear Complementary Filters on the Special Orthogonal Group[J]. IEEE Transactions on Automatic Control, 2008, 53(5):1203-1218.
+
+    \bibitem{ref6} 张明,李华,王强.基于机器视觉的目标识别与跟踪算法研究[J].光电工程,2020,47(3):15-23.
+
+    \bibitem{ref7} T. D. B. ���. Incremental Encoder Based Motor Speed and Position Measurement[C]. Proceedings of the IEEE International Conference on Power Electronics, 2017:234-239.
+
+    \bibitem{ref8} 王磊,孙建华,李明.嵌入式系统在智能控制中的应用与发展[J].微计算机信息,2021,37(4):78-81.
+
+    \bibitem{ref9} Kalman R E. A New Approach to Linear Filtering and Prediction Problems[J]. Journal of Basic Engineering, 1960, 82(1):35-45.
+
+    \bibitem{ref10} 杨金铎,王林波,曾惜,等.自动化机器人轨迹跟踪与路径规划技术研究[J].自动化仪表,2022,43(07):40-45.
+\end{thebibliography}
+}
+
+\end{document}
