@@ -1,82 +1,82 @@
-# Web 调参台工程壳与依赖配置
+# 小车运动轨迹 Web 控制台
 
-本目录保存调参 Web 控制台的 Vite/React 工程配置、依赖锁定文件和已有构建产物。当前业务源码不在本目录，而在同级 `../tiaocan/src`。
+`web` 是独立的 React/TypeScript/Vite 前端，用于记录和显示小车运动方向、轮速、偏航角、工作模式和二维积分轨迹。它通过浏览器 Web Serial 读取固定 32 字节小端序遥测帧，不需要后端服务。
 
-## 当前目录状态
+本目录和 `../tiaocan` 是两套互不相干的 Web 工具：
 
-| 内容 | 状态 |
+- `web/`：运动轨迹和底盘状态看板；
+- `../tiaocan/`：钢珠平衡调参台，记录小球、车速、舵机和任务状态。
+
+## 目录说明
+
+| 路径 | 内容 |
 | --- | --- |
-| `package.json` | 存在，定义 Vite、TypeScript、Vitest、Playwright 脚本。 |
-| `package-lock.json` | 存在，锁定 npm 依赖版本。 |
-| `vite.config.ts` / `vitest.config.ts` | 存在。 |
-| `tsconfig*.json` | 存在。 |
-| `dist/` | 存在，为历史构建产物，已在根仓库 `.gitignore` 中默认忽略。 |
-| `src/` | 当前不存在，源码主体位于 `../tiaocan/src`。 |
-| `node_modules/` | 本地依赖缓存，已在根仓库 `.gitignore` 中默认忽略。 |
+| `src/App.tsx` | 页面主逻辑：串口连接、遥测接收、轨迹积分、CSV 导出和演示模式。 |
+| `src/lib/protocol.ts` | `AA 55` 32 字节遥测帧解析、CRC16 校验和测试帧编码。 |
+| `src/lib/serial.ts` | Web Serial 串口封装。 |
+| `src/components/PathCanvas.tsx` | 小车二维路径显示。 |
+| `src/components/SpeedChart.tsx` | 速度设定、左轮速度、右轮速度趋势图。 |
+| `src/components/VehicleSchematic.tsx` | 车辆姿态和工作状态示意。 |
+| `tests/` | Playwright 页面渲染测试。 |
 
-因此，本目录不能在当前状态下独立完成源码构建，除非补回 `src`。
-
-## 与 `tiaocan` 的关系
-
-`tiaocan` 是调参台源码目录，包含：
-
-- UART2 遥测协议解析；
-- Web Serial 串口读取；
-- 实验记录 IndexedDB 存储；
-- CSV 导入/导出；
-- 实测指标计算；
-- 简化物理模型仿真；
-- `BallBalanceConfig` C 参数片段导出；
-- React UI 组件和测试。
-
-`web` 提供 npm 工程元数据。若要恢复可运行状态，可采用以下任一方式：
-
-1. 在 `web` 下创建/复制 `src`，内容来自 `../tiaocan/src`；
-2. 或把本目录的 `package.json`、锁文件和配置复制到 `../tiaocan`，以 `tiaocan` 作为工程根目录。
-
-## 依赖与脚本
-
-`package.json` 中定义：
-
-```json
-{
-  "dev": "vite",
-  "build": "tsc -b && vite build",
-  "test": "vitest run",
-  "test:e2e": "playwright test",
-  "preview": "vite preview"
-}
-```
-
-主要依赖：
-
-- React 18；
-- Vite 6；
-- TypeScript 5；
-- Vitest；
-- Playwright；
-- lucide-react 图标库。
-
-## 恢复运行示例
-
-如果选择把 `tiaocan/src` 复制到 `web/src`：
+## 运行
 
 ```powershell
 cd web
 npm install
-npm run dev -- --host 127.0.0.1 --port 4317
+npm run dev
 ```
 
-浏览器使用 Chrome 或 Edge 打开：
+使用 Chrome 或 Edge 打开终端输出的本机地址。Web Serial 只允许在安全上下文中运行，`localhost` 和 `127.0.0.1` 均可使用。
 
-```text
-http://127.0.0.1:4317
+## 串口参数
+
+默认参数：
+
+- 波特率：`9600`
+- 数据格式：`8N1`
+- 流控：无
+- 标称帧周期：`50 ms`
+
+点击“选择并连接”后，在浏览器弹出的系统设备列表中选择 USB 转串口或蓝牙 SPP 串口。
+
+## 遥测帧协议
+
+网页按 `src/lib/protocol.ts` 解析固定 32 字节小端序帧。固件发送端必须与下表保持一致：
+
+| 偏移 | 长度 | 字段 |
+|---:|---:|---|
+| 0 | 2 | 帧头 `AA 55` |
+| 2 | 1 | 版本 `1` |
+| 3 | 1 | 帧长 `32` |
+| 4 | 4 | 帧序号 `uint32_t` |
+| 8 | 4 | 速度设定 `float`，cm/s |
+| 12 | 4 | 左轮速度 `float`，cm/s |
+| 16 | 4 | 右轮速度 `float`，cm/s |
+| 20 | 4 | 偏航角 `float`，deg |
+| 24 | 2 | 工作模式 `int16_t` |
+| 26 | 2 | 开机秒数 `uint16_t` |
+| 28 | 1 | bit0：对端在线 |
+| 29 | 1 | 保留 |
+| 30 | 2 | CRC-16/CCITT-FALSE，覆盖 0..29 字节 |
+
+路径位置由左右轮平均速度积分，方向使用遥测帧中的偏航角。网页最多保留 5000 个路径点和 10000 帧 CSV 数据。
+
+## 功能
+
+- 实时显示连接状态、帧率、丢帧、CRC 错误、格式错误和丢弃字节；
+- 显示速度设定、左右轮速度、偏航角、工作模式、开机时间和对端在线标志；
+- 按偏航角积分显示车辆轨迹；
+- 支持暂停轨迹、缩放和视图模式切换；
+- 支持导出最近记录为 CSV；
+- 内置演示模式，便于无串口时验证页面显示。
+
+## 验证
+
+```powershell
+npm test
+npm run build
+npm run test:e2e
 ```
 
-Web Serial 需要安全上下文和用户手动选择串口；Firefox 不支持。
-
-## 注意
-
-- 不应提交 `node_modules/`、`dist/`、`*.tsbuildinfo` 和 Vite 日志。
-- 调参台协议和运行说明以 `../tiaocan/README.md` 为准。
-- 若后续整理项目，建议合并 `web` 与 `tiaocan`，保留一个完整的前端工程根目录。
+已知约束：当前仓库主控代码中主要包含钢珠调参 UART2 遥测和 UART3 舵机总线逻辑；`web` 使用的 32 字节运动遥测发送端需与实际烧录固件保持一致。

@@ -1,6 +1,6 @@
 # 2026-H-TI 车载平衡滚球运动控制系统
 
-本仓库整理 2026 年全国大学生电子设计竞赛 H 题“车载平衡滚球运动控制系统”的完整完赛代码与文档，包含 MaixCAM 视觉测量、MaixCAM 图传录制、MSPM0G3507 小车主控、蓝牙调参遥测 Web 控制台和设计报告。
+本仓库整理 2026 年全国大学生电子设计竞赛 H 题“车载平衡滚球运动控制系统”的完整完赛代码与文档，包含 MaixCAM 视觉测量、MaixCAM 图传录制、MSPM0G3507 小车主控、两套独立 Web 工具和设计报告。
 
 系统目标是在车载横梁/PPR 管上检测并控制 1 cm 钢珠位置，同时完成题目要求的车辆行驶、循迹、停车和位置保持任务。
 
@@ -25,6 +25,10 @@ MSPM0G3507 主控工程
   Web Serial 接收遥测
   记录/回放/指标/仿真/参数导出
 
+运动轨迹 Web 控制台
+  Web Serial 接收小车运动遥测
+  轮速、偏航角、工作模式和路径积分显示
+
 MaixCAM 图传工程
   原生 WebRTC 视频流
   PC 浏览器本地录制
@@ -37,8 +41,8 @@ MaixCAM 图传工程
 | `Maixcam/` | MaixCAM 视觉测量主工程：钢珠检测、标定、YOLO 辅助、UART 输出和 WebRTC 图传。 |
 | `mspm0g3507_26ti/` | MSPM0G3507 主控工程：行车控制、循迹、IMU、钢珠闭环、任务状态机和遥测。 |
 | `tuchuan/` | MaixCAM 图传专用版本：只启动 WebRTC，用于比赛视频预览和录制。 |
-| `tiaocan/` | 调参 Web 控制台源码：React/TypeScript、Web Serial、记录回放、仿真和参数导出。 |
-| `web/` | 调参台 Vite/TypeScript 工程配置、依赖锁定和历史构建产物；源码主体在 `tiaocan/src`。 |
+| `tiaocan/` | 钢珠调参 Web 控制台：记录小车运行状态、车速、小球运动和舵机状态，用于实车调参、回放、仿真和参数导出。 |
+| `web/` | 小车运动轨迹 Web 控制台：记录方向、轮速、偏航角、工作模式并积分显示车辆路径。与 `tiaocan/` 互不依赖。 |
 | `latex/` | 设计报告 LaTeX 源文件和已生成 PDF。 |
 | `PINOUT.md` | 硬件引脚和接线说明。 |
 | `2026年全国大学生电子设计竞赛H题：车载平衡滚球运动控制系统.md` | 题目说明 Markdown。 |
@@ -60,7 +64,8 @@ MaixCAM 图传工程
 | --- | --- | --- | --- |
 | MaixCAM UART -> MSPM0 UART1 | MaixCAM 到 MCU | 钢珠位置、速度、置信度 | 115200 8N1，20 字节二进制帧，CRC16 |
 | MSPM0 UART3 -> 总线舵机 | MCU 到舵机 | 舵机角度和速度命令 | 见 `driver/ftServo.c` |
-| MSPM0 UART2 -> HC-05 -> PC | MCU 到调参台 | 任务遥测、实测曲线、参数调试 | 9600 8N1，20 Hz 二进制遥测 |
+| MSPM0 UART2 -> HC-05 -> PC | MCU 到 `tiaocan` | 任务遥测、实测曲线、钢珠/舵机参数调试 | 9600 8N1，20 Hz 二进制遥测 |
+| 运动遥测串口 -> PC | MCU 到 `web` | 小车方向、轮速、偏航角、工作模式和路径记录 | 9600 8N1，32 字节 `AA 55` 帧 |
 | MaixCAM WebRTC -> PC | MaixCAM 到浏览器 | 视频预览和录制 | HTTP/WebRTC，默认端口 8000 |
 
 ## 运行入口
@@ -107,16 +112,29 @@ cd tuchuan\main\host
 
 打开 `http://127.0.0.1:18765`，填写 MaixCAM IP 并录制。详细说明见 `tuchuan/README.md` 和 `tuchuan/main/README.md`。
 
-### 4. 调参 Web 控制台
+### 4. 钢珠调参 Web 控制台
 
-调参台源码在 `tiaocan/src`，工程配置在 `web/`。当前目录拆分状态需要先合并配置和源码再运行。恢复工程后：
+`tiaocan/` 是独立前端工程，用于记录小车运行状态、车速、小球运动、舵机状态并辅助调参：
 
 ```powershell
+cd tiaocan
 npm install
 npm run dev -- --host 127.0.0.1 --port 4317
 ```
 
-使用 Chrome 或 Edge 打开 `http://127.0.0.1:4317`，通过 Web Serial 连接 HC-05。详细说明见 `tiaocan/README.md` 和 `web/README.md`。
+使用 Chrome 或 Edge 打开 `http://127.0.0.1:4317`，通过 Web Serial 连接 HC-05。详细说明见 `tiaocan/README.md`。
+
+### 5. 小车运动轨迹 Web 控制台
+
+`web/` 是另一套独立前端工程，用于显示和记录小车方向、轮速、偏航角、工作模式和积分路径：
+
+```powershell
+cd web
+npm install
+npm run dev
+```
+
+使用 Chrome 或 Edge 打开 Vite 输出的本机地址，通过 Web Serial 选择对应串口。详细说明见 `web/README.md`。
 
 ## 标定与调试顺序
 
@@ -135,8 +153,10 @@ npm run dev -- --host 127.0.0.1 --port 4317
 - `Maixcam/maixcam/calibration/README.md`：视觉位置标定。
 - `Maixcam/docs/mcu_control.md`：MaixCAM 与 MCU 控制权划分。
 - `Maixcam/docs/task_execution.md`：任务目标和状态机说明。
-- `mspm0g3507_26ti/UART2_TELEMETRY.md`：蓝牙遥测协议。
+- `mspm0g3507_26ti/UART2_TELEMETRY.md`：钢珠调参蓝牙遥测协议。
 - `mspm0g3507_26ti/变量定义及调参说明.md`：MCU 调参变量说明。
+- `tiaocan/README.md`：钢珠调参 Web 控制台说明。
+- `web/README.md`：小车运动轨迹 Web 控制台说明。
 - `latex/README.md`：设计报告编译说明。
 
 ## Git 提交范围

@@ -68,5 +68,6 @@ latex/*.synctex.gz
 # Local backups and cache
 backups/
 Maixcam/backups/
+tiaocan/web/
 *.bak
 *.tmp
