@@ -35,6 +35,7 @@ WebRTC 图传与视觉处理共用 MaixCAM，但使用独立摄像头通道，�
 | `mcu/` | 便携式 C 语言参考模块：视觉协议解析、视觉链路封装、任务状态机。 |
 | `docs/` | MCU 接入、任务执行、舵机控制等说明。 |
 | `tests/` | 脱离硬件的 Python/C 协议和核心逻辑测试。 |
+| `yolo/` | 钢珠 YOLO11n-Pose 训练、数据集、评估结果、ONNX 导出和 MaixCAM 专属格式转换资料。 |
 | `backups/` | 历史实验版本，已在根仓库 `.gitignore` 中默认忽略。 |
 
 ## 关键模块
@@ -47,6 +48,8 @@ WebRTC 图传与视觉处理共用 MaixCAM，但使用独立摄像头通道，�
 - `vision_protocol.py`：MaixCAM -> MCU 的 20 字节 UART 帧编码/解码与 CRC16。
 - `web_stream.py`：启动 MaixCAM 原生 WebRTC 服务。
 - `uart_transport.py`：串口写入封装。
+
+`yolo/` 是独立整理的训练与部署资料目录，主工程运行时只需要最终部署到 MaixCAM 的模型文件；完整数据集、训练脚本、评估报告、`best.pt`、`best.onnx` 和 `.cvimodel/.mud` 转换资料都保存在该目录内，便于复现实验和上传 GitHub 归档。
 
 ## 硬件与通信
 
@@ -97,6 +100,33 @@ AA 55 | version | flags | sequence | timestamp_ms
 | `LAB_THRESHOLDS` | `L<=55` | 钢珠暗色区域阈值，需要随光照复核。 |
 | `ADAPTIVE_L_ENABLED` | `True` | 低频估计 ROI 亮度并调整 L 上限。 |
 | `TRACK_VALID_HOLD_MS` | `70` | 单帧丢失后的短时预测保持窗口。 |
+
+## YOLO 训练与转换
+
+新增的 `yolo/` 目录包含钢珠中心点检测的 YOLO11n-Pose 训练工程。最终训练数据位于 `yolo/datasets/gangzhu_pose_v2`，已经整理为 Ultralytics YOLO pose 格式；训练和导出脚本位于 `yolo/scripts`；训练曲线、评估结果和权重位于 `yolo/results` 与 `yolo/docs`。
+
+主要产物：
+
+- `yolo/results/weights/best.pt`：PyTorch 最优权重。
+- `yolo/results/weights/best.onnx`：导出的 ONNX 模型。
+- `yolo/maixcam_conversion/deploy/gangzhu_yolo11n_pose_320_int8.cvimodel`：MaixCAM CV181x NPU 可运行的 INT8 模型。
+- `yolo/maixcam_conversion/deploy/gangzhu_yolo11n_pose_320.mud`：MaixPy 加载 `.cvimodel` 所需的模型描述文件。
+
+训练入口：
+
+```powershell
+cd Maixcam\yolo\scripts
+.\run_train.ps1 --device 0
+```
+
+ONNX 导出入口：
+
+```powershell
+cd Maixcam\yolo\scripts
+.\run_export.ps1
+```
+
+ONNX 转 MaixCAM 专属格式的脚本、WSL2/TPU-MLIR 环境说明和历史转换报告见 `yolo/maixcam_conversion/README.md`。部署到 MaixCAM 时，将 `.mud` 和 `.cvimodel` 放在设备同一模型目录下，并在 MaixPy 中加载 `.mud` 文件。
 
 ## 图传录制
 
