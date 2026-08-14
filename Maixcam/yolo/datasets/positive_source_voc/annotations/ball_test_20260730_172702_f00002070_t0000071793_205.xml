@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<annotation>
+  <filename>ball_test_20260730_172702_f00002070_t0000071793_205.jpg</filename>
+  <size>
+    <width>416</width>
+    <height>234</height>
+    <depth>3</depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>gangzhu</name>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <occluded>0</occluded>
+    <bndbox>
+      <xmin>233</xmin>
+      <ymin>111</ymin>
+      <xmax>248</xmax>
+      <ymax>126</ymax>
+    </bndbox>
+  </object>
+</annotation>

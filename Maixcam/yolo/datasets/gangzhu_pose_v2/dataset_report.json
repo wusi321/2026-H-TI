@@ -1,0 +1,35 @@
+{
+  "positive_source": "../positive_source_voc",
+  "negative_source": "../negative_samples_185508",
+  "test_chunks": [
+    3,
+    11
+  ],
+  "val_chunks": [
+    5,
+    9
+  ],
+  "chunk_frames": 300,
+  "guard_frames": 30,
+  "splits": {
+    "train": {
+      "images": 610,
+      "positive": 522,
+      "negative": 88,
+      "augmented": 305
+    },
+    "val": {
+      "images": 68,
+      "positive": 56,
+      "negative": 12,
+      "augmented": 0
+    },
+    "test": {
+      "images": 60,
+      "positive": 60,
+      "negative": 0,
+      "augmented": 0
+    }
+  },
+  "skipped": 24
+}

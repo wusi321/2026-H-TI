@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<annotation>
+  <folder>images</folder>
+  <filename>ball_test_20260730_172702_f00002730_t0000094683.jpg</filename>
+  <source>
+    <database>MaixCAM steel ball recording</database>
+  </source>
+  <size>
+    <width>640</width>
+    <height>360</height>
+    <depth>3</depth>
+  </size>
+  <segmented>0</segmented>
+</annotation>

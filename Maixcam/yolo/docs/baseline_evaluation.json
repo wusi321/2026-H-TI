@@ -1,0 +1,174 @@
+{
+  "model": "historical_baseline/yolo11n_pose_320/weights/best.pt",
+  "dataset": "datasets/gangzhu_pose_v2",
+  "evaluations": [
+    {
+      "split": "val",
+      "confidence_threshold": 0.25,
+      "images": 68,
+      "positive_images": 56,
+      "negative_images": 12,
+      "matched_positive_images": 12,
+      "positive_recall": 0.2143,
+      "false_positive_images": 0,
+      "negative_false_positive_rate": 0.0,
+      "center_error_px": {
+        "mean": 2.5809,
+        "p50": 2.869,
+        "p95": 4.2323,
+        "max": 4.2437
+      },
+      "matched_iou": {
+        "mean": 0.7625,
+        "p50": 0.7612
+      },
+      "matched_confidence": {
+        "mean": 0.6053,
+        "p05": 0.3398
+      },
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 0,
+          "total": 0,
+          "recall": null
+        },
+        "medium_10_20px": {
+          "matched": 6,
+          "total": 32,
+          "recall": 0.1875
+        },
+        "large_ge_20px": {
+          "matched": 6,
+          "total": 24,
+          "recall": 0.25
+        }
+      }
+    },
+    {
+      "split": "test",
+      "confidence_threshold": 0.25,
+      "images": 60,
+      "positive_images": 60,
+      "negative_images": 0,
+      "matched_positive_images": 28,
+      "positive_recall": 0.4667,
+      "false_positive_images": 0,
+      "negative_false_positive_rate": null,
+      "center_error_px": {
+        "mean": 3.8349,
+        "p50": 3.1918,
+        "p95": 9.6588,
+        "max": 13.6967
+      },
+      "matched_iou": {
+        "mean": 0.7661,
+        "p50": 0.785
+      },
+      "matched_confidence": {
+        "mean": 0.6823,
+        "p05": 0.4784
+      },
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 0,
+          "total": 13,
+          "recall": 0.0
+        },
+        "medium_10_20px": {
+          "matched": 0,
+          "total": 17,
+          "recall": 0.0
+        },
+        "large_ge_20px": {
+          "matched": 28,
+          "total": 30,
+          "recall": 0.9333
+        }
+      }
+    },
+    {
+      "split": "val",
+      "confidence_threshold": 0.6,
+      "images": 68,
+      "positive_images": 56,
+      "negative_images": 12,
+      "matched_positive_images": 9,
+      "positive_recall": 0.1607,
+      "false_positive_images": 0,
+      "negative_false_positive_rate": 0.0,
+      "center_error_px": {
+        "mean": 2.8088,
+        "p50": 3.0298,
+        "p95": 4.2354,
+        "max": 4.2437
+      },
+      "matched_iou": {
+        "mean": 0.7711,
+        "p50": 0.7734
+      },
+      "matched_confidence": {
+        "mean": 0.6765,
+        "p05": 0.6053
+      },
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 0,
+          "total": 0,
+          "recall": null
+        },
+        "medium_10_20px": {
+          "matched": 3,
+          "total": 32,
+          "recall": 0.0938
+        },
+        "large_ge_20px": {
+          "matched": 6,
+          "total": 24,
+          "recall": 0.25
+        }
+      }
+    },
+    {
+      "split": "test",
+      "confidence_threshold": 0.6,
+      "images": 60,
+      "positive_images": 60,
+      "negative_images": 0,
+      "matched_positive_images": 21,
+      "positive_recall": 0.35,
+      "false_positive_images": 0,
+      "negative_false_positive_rate": null,
+      "center_error_px": {
+        "mean": 3.9946,
+        "p50": 3.2181,
+        "p95": 11.0797,
+        "max": 13.6967
+      },
+      "matched_iou": {
+        "mean": 0.7611,
+        "p50": 0.7871
+      },
+      "matched_confidence": {
+        "mean": 0.7385,
+        "p05": 0.6318
+      },
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 0,
+          "total": 13,
+          "recall": 0.0
+        },
+        "medium_10_20px": {
+          "matched": 0,
+          "total": 17,
+          "recall": 0.0
+        },
+        "large_ge_20px": {
+          "matched": 21,
+          "total": 30,
+          "recall": 0.7
+        }
+      }
+    }
+  ]
+}

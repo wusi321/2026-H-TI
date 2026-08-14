@@ -1,0 +1,98 @@
+[
+  {
+    "image": "ball_test_20260730_172702_f00000870_t0000030174_23.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00000880_t0000030521_24.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00000890_t0000030867_90.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00001200_t0000041619_27.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00001210_t0000041966_28.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00001220_t0000042313_29.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00001470_t0000050983_52.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00001480_t0000051330_54.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00001490_t0000051677_53.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00001800_t0000062428_195.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00001810_t0000062775_104.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00001820_t0000063122_105.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00002670_t0000092602_353.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00002680_t0000092949_354.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00002690_t0000093296_352.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00003010_t0000104394_372.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00003020_t0000104741_370.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00003280_t0000113759_383.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00003290_t0000114105_384.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00003600_t0000124857_297.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_172702_f00003610_t0000125204_319.jpg",
+    "reason": "split_guard"
+  },
+  {
+    "image": "ball_test_20260730_185508_f00000440_t0000015260.jpg",
+    "reason": "negative_split_guard"
+  },
+  {
+    "image": "ball_test_20260730_185508_f00000450_t0000015607.jpg",
+    "reason": "negative_split_guard"
+  },
+  {
+    "image": "ball_test_20260730_185508_f00000460_t0000015954.jpg",
+    "reason": "negative_split_guard"
+  }
+]

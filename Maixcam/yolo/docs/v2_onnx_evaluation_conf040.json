@@ -1,0 +1,175 @@
+{
+  "model": "results/weights/best.onnx",
+  "dataset": "datasets/gangzhu_pose_v2",
+  "batch": 1,
+  "evaluations": [
+    {
+      "split": "val",
+      "confidence_threshold": 0.4,
+      "images": 68,
+      "positive_images": 56,
+      "negative_images": 12,
+      "matched_positive_images": 52,
+      "positive_recall": 0.9286,
+      "false_positive_images": 0,
+      "negative_false_positive_rate": 0.0,
+      "center_error_px": {
+        "mean": 1.4367,
+        "p50": 1.261,
+        "p95": 3.1297,
+        "max": 3.6349
+      },
+      "matched_iou": {
+        "mean": 0.7837,
+        "p50": 0.8037
+      },
+      "matched_confidence": {
+        "mean": 0.7274,
+        "p05": 0.6069
+      },
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 0,
+          "total": 0,
+          "recall": null
+        },
+        "medium_10_20px": {
+          "matched": 32,
+          "total": 32,
+          "recall": 1.0
+        },
+        "large_ge_20px": {
+          "matched": 20,
+          "total": 24,
+          "recall": 0.8333
+        }
+      }
+    },
+    {
+      "split": "test",
+      "confidence_threshold": 0.4,
+      "images": 60,
+      "positive_images": 60,
+      "negative_images": 0,
+      "matched_positive_images": 58,
+      "positive_recall": 0.9667,
+      "false_positive_images": 0,
+      "negative_false_positive_rate": null,
+      "center_error_px": {
+        "mean": 1.9667,
+        "p50": 1.577,
+        "p95": 4.7364,
+        "max": 8.0731
+      },
+      "matched_iou": {
+        "mean": 0.7316,
+        "p50": 0.7365
+      },
+      "matched_confidence": {
+        "mean": 0.7403,
+        "p05": 0.5617
+      },
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 11,
+          "total": 13,
+          "recall": 0.8462
+        },
+        "medium_10_20px": {
+          "matched": 17,
+          "total": 17,
+          "recall": 1.0
+        },
+        "large_ge_20px": {
+          "matched": 30,
+          "total": 30,
+          "recall": 1.0
+        }
+      }
+    },
+    {
+      "split": "val",
+      "confidence_threshold": 0.6,
+      "images": 68,
+      "positive_images": 56,
+      "negative_images": 12,
+      "matched_positive_images": 50,
+      "positive_recall": 0.8929,
+      "false_positive_images": 0,
+      "negative_false_positive_rate": 0.0,
+      "center_error_px": {
+        "mean": 1.387,
+        "p50": 1.211,
+        "p95": 3.1305,
+        "max": 3.6349
+      },
+      "matched_iou": {
+        "mean": 0.7889,
+        "p50": 0.8123
+      },
+      "matched_confidence": {
+        "mean": 0.7341,
+        "p05": 0.6413
+      },
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 0,
+          "total": 0,
+          "recall": null
+        },
+        "medium_10_20px": {
+          "matched": 31,
+          "total": 32,
+          "recall": 0.9688
+        },
+        "large_ge_20px": {
+          "matched": 19,
+          "total": 24,
+          "recall": 0.7917
+        }
+      }
+    },
+    {
+      "split": "test",
+      "confidence_threshold": 0.6,
+      "images": 60,
+      "positive_images": 60,
+      "negative_images": 0,
+      "matched_positive_images": 50,
+      "positive_recall": 0.8333,
+      "false_positive_images": 0,
+      "negative_false_positive_rate": null,
+      "center_error_px": {
+        "mean": 2.1024,
+        "p50": 1.7859,
+        "p95": 4.8591,
+        "max": 8.0731
+      },
+      "matched_iou": {
+        "mean": 0.7549,
+        "p50": 0.7497
+      },
+      "matched_confidence": {
+        "mean": 0.7707,
+        "p05": 0.6407
+      },
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 7,
+          "total": 13,
+          "recall": 0.5385
+        },
+        "medium_10_20px": {
+          "matched": 13,
+          "total": 17,
+          "recall": 0.7647
+        },
+        "large_ge_20px": {
+          "matched": 30,
+          "total": 30,
+          "recall": 1.0
+        }
+      }
+    }
+  ]
+}

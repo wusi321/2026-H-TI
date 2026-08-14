@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<annotation>
+  <folder>images</folder>
+  <filename>ball_test_20260730_172702_f00003960_t0000137343.jpg</filename>
+  <source>
+    <database>MaixCAM steel ball recording</database>
+  </source>
+  <size>
+    <width>640</width>
+    <height>360</height>
+    <depth>3</depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>gangzhu</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>314</xmin>
+      <ymin>89</ymin>
+      <xmax>329</xmax>
+      <ymax>105</ymax>
+    </bndbox>
+  </object>
+</annotation>

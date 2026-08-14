@@ -1,0 +1,181 @@
+{
+  "model": "results/weights/best.pt",
+  "confidence_threshold": 0.4,
+  "cases": [
+    {
+      "case": "clean",
+      "positive_recall": 0.9667,
+      "matched": 58,
+      "positive_images": 60,
+      "center_error_mean_px": 1.9772,
+      "center_error_p95_px": 4.7271,
+      "negative_false_positive_images": 0,
+      "negative_images": 59,
+      "negative_false_positive_rate": 0.0,
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 11,
+          "total": 13
+        },
+        "medium_10_20px": {
+          "matched": 17,
+          "total": 17
+        },
+        "large_ge_20px": {
+          "matched": 30,
+          "total": 30
+        }
+      }
+    },
+    {
+      "case": "dark_gamma_145",
+      "positive_recall": 0.9167,
+      "matched": 55,
+      "positive_images": 60,
+      "center_error_mean_px": 2.0426,
+      "center_error_p95_px": 4.9595,
+      "negative_false_positive_images": 0,
+      "negative_images": 59,
+      "negative_false_positive_rate": 0.0,
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 10,
+          "total": 13
+        },
+        "medium_10_20px": {
+          "matched": 17,
+          "total": 17
+        },
+        "large_ge_20px": {
+          "matched": 28,
+          "total": 30
+        }
+      }
+    },
+    {
+      "case": "bright_gamma_065",
+      "positive_recall": 0.9333,
+      "matched": 56,
+      "positive_images": 60,
+      "center_error_mean_px": 1.9064,
+      "center_error_p95_px": 4.3151,
+      "negative_false_positive_images": 0,
+      "negative_images": 59,
+      "negative_false_positive_rate": 0.0,
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 10,
+          "total": 13
+        },
+        "medium_10_20px": {
+          "matched": 17,
+          "total": 17
+        },
+        "large_ge_20px": {
+          "matched": 29,
+          "total": 30
+        }
+      }
+    },
+    {
+      "case": "gray3",
+      "positive_recall": 0.8833,
+      "matched": 53,
+      "positive_images": 60,
+      "center_error_mean_px": 1.8718,
+      "center_error_p95_px": 4.8946,
+      "negative_false_positive_images": 0,
+      "negative_images": 59,
+      "negative_false_positive_rate": 0.0,
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 9,
+          "total": 13
+        },
+        "medium_10_20px": {
+          "matched": 17,
+          "total": 17
+        },
+        "large_ge_20px": {
+          "matched": 27,
+          "total": 30
+        }
+      }
+    },
+    {
+      "case": "local_shadow",
+      "positive_recall": 0.9333,
+      "matched": 56,
+      "positive_images": 60,
+      "center_error_mean_px": 1.9661,
+      "center_error_p95_px": 5.1905,
+      "negative_false_positive_images": 0,
+      "negative_images": 59,
+      "negative_false_positive_rate": 0.0,
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 10,
+          "total": 13
+        },
+        "medium_10_20px": {
+          "matched": 17,
+          "total": 17
+        },
+        "large_ge_20px": {
+          "matched": 29,
+          "total": 30
+        }
+      }
+    },
+    {
+      "case": "motion_blur_5",
+      "positive_recall": 0.95,
+      "matched": 57,
+      "positive_images": 60,
+      "center_error_mean_px": 1.9588,
+      "center_error_p95_px": 4.8394,
+      "negative_false_positive_images": 0,
+      "negative_images": 59,
+      "negative_false_positive_rate": 0.0,
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 10,
+          "total": 13
+        },
+        "medium_10_20px": {
+          "matched": 17,
+          "total": 17
+        },
+        "large_ge_20px": {
+          "matched": 30,
+          "total": 30
+        }
+      }
+    },
+    {
+      "case": "dark_motion_blur",
+      "positive_recall": 0.95,
+      "matched": 57,
+      "positive_images": 60,
+      "center_error_mean_px": 2.0198,
+      "center_error_p95_px": 5.6656,
+      "negative_false_positive_images": 0,
+      "negative_images": 59,
+      "negative_false_positive_rate": 0.0,
+      "diameter_buckets": {
+        "small_lt_10px": {
+          "matched": 10,
+          "total": 13
+        },
+        "medium_10_20px": {
+          "matched": 17,
+          "total": 17
+        },
+        "large_ge_20px": {
+          "matched": 30,
+          "total": 30
+        }
+      }
+    }
+  ]
+}
